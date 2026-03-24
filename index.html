@@ -5,13 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gunnar Patterson | Resume Portfolio</title>
   <meta name="description" content="Professional resume portfolio for Gunnar Patterson." />
-  <meta property="og:title" content="Gunnar Patterson – Event Operations & Management" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#07111f" />
+  <meta property="og:title" content="Gunnar Patterson – Event Operations &amp; Management" />
   <meta property="og:description" content="Portfolio and resume of Gunnar Patterson – event operations, logistics, and guest experience." />
   <meta property="og:image" content="https://hiregunnar.live/preview.png" />
   <meta property="og:url" content="https://hiregunnar.live" />
   <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gunnar Patterson – Event Operations &amp; Management" />
+  <meta name="twitter:description" content="Portfolio and resume of Gunnar Patterson – event operations, logistics, and guest experience." />
+  <meta name="twitter:image" content="https://hiregunnar.live/preview.png" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico?v=2">
-<link rel="shortcut icon" href="/favicon.ico?v=2">
+  <link rel="shortcut icon" href="/favicon.ico?v=2">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Gunnar Patterson",
+    "url": "https://hiregunnar.live",
+    "email": "mailto:gunrp2@gmail.com",
+    "telephone": "+1-864-491-9201",
+    "jobTitle": "Event & Hospitality Professional",
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "Clemson University"
+    },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Clemson",
+      "addressRegion": "SC",
+      "addressCountry": "US"
+    }
+  }
+  </script>
+
   <style>
     :root {
       --bg: #07111f;
@@ -32,13 +61,9 @@
       --container: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -48,6 +73,64 @@
       min-height: 100vh;
       position: relative;
       overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; }
+
+    :focus-visible {
+      outline: 2px solid rgba(103, 232, 249, 0.9);
+      outline-offset: 3px;
+      border-radius: 14px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 14px;
+      top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(8, 15, 28, 0.86);
+      border: 1px solid var(--border);
+      color: var(--text);
+      z-index: 60;
+      transform: translateY(-160%);
+      transition: transform 0.2s ease;
+    }
+    .skip-link:focus { transform: translateY(0); }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 55;
+      opacity: 0.9;
+      box-shadow: 0 10px 20px rgba(103, 232, 249, 0.18);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%) translateY(12px);
+      background: rgba(8, 15, 28, 0.86);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 70;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
     }
 
     .bg-fluid {
@@ -85,15 +168,6 @@
       background-size: 120px 120px;
       mask-image: radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 0.9), transparent 80%);
       animation: gridDrift 40s linear infinite;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button {
-      font: inherit;
     }
 
     .shell {
@@ -144,31 +218,18 @@
     }
 
     @keyframes meshFloat {
-      from {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      to {
-        transform: translate3d(-2%, 1.2%, 0) scale(1.06);
-      }
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to { transform: translate3d(-2%, 1.2%, 0) scale(1.06); }
     }
 
     @keyframes orbFloat {
-      0%,
-      100% {
-        transform: translate3d(0, 0, 0);
-      }
-      50% {
-        transform: translate3d(24px, -20px, 0);
-      }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      50% { transform: translate3d(24px, -20px, 0); }
     }
 
     @keyframes gridDrift {
-      from {
-        transform: translate3d(0, 0, 0);
-      }
-      to {
-        transform: translate3d(12px, 18px, 0);
-      }
+      from { transform: translate3d(0, 0, 0); }
+      to { transform: translate3d(12px, 18px, 0); }
     }
 
     .topbar {
@@ -225,7 +286,11 @@
     .cta,
     .ghost,
     .quick-button,
-    .copy-button {
+    .copy-button,
+    .icon-btn,
+    .filter-chip,
+    .collapse-toggle,
+    .fab-btn {
       border: 0;
       cursor: pointer;
       transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
@@ -242,17 +307,22 @@
     .mobile-nav button:hover,
     .ghost:hover,
     .quick-button:hover,
-    .copy-button:hover {
+    .copy-button:hover,
+    .icon-btn:hover,
+    .filter-chip:hover,
+    .collapse-toggle:hover,
+    .fab-btn:hover {
       background: rgba(255, 255, 255, 0.06);
       color: var(--text);
       transform: translateY(-1px);
     }
 
     .nav button.active,
-    .mobile-nav button.active {
+    .mobile-nav button.active,
+    .filter-chip.active {
       background: var(--accent);
       color: #082131;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .menu-toggle {
@@ -275,9 +345,7 @@
       flex-direction: column;
     }
 
-    .mobile-nav.open {
-      display: flex;
-    }
+    .mobile-nav.open { display: flex; }
 
     .mobile-nav button {
       text-align: left;
@@ -292,19 +360,11 @@
       animation: fadeUp 0.35s ease;
     }
 
-    .page.active {
-      display: block;
-    }
+    .page.active { display: block; }
 
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .grid-hero {
@@ -331,10 +391,7 @@
       gap: 20px;
     }
 
-    .stack {
-      display: grid;
-      gap: 28px;
-    }
+    .stack { display: grid; gap: 28px; }
 
     .card {
       background: var(--panel);
@@ -351,6 +408,17 @@
       padding: 32px;
       position: relative;
       z-index: 2;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .hero-card::before,
@@ -394,9 +462,7 @@
       text-transform: uppercase;
     }
 
-    h1, h2, h3, p {
-      margin: 0;
-    }
+    h1, h2, h3, p { margin: 0; }
 
     .hero-name {
       margin-top: 22px;
@@ -406,10 +472,7 @@
       font-weight: 700;
     }
 
-    .hero-name span {
-      color: var(--accent);
-      display: block;
-    }
+    .hero-name span { color: var(--accent); display: block; }
 
     .hero-copy {
       margin-top: 24px;
@@ -417,6 +480,35 @@
       font-size: 18px;
       line-height: 1.8;
       color: var(--soft);
+    }
+
+    .stats-row {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      background: rgba(7, 13, 24, 0.46);
+      border-radius: 22px;
+      padding: 14px 16px;
+    }
+
+    .stat-number {
+      font-size: 22px;
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      color: #dffcff;
+    }
+
+    .stat-label {
+      margin-top: 6px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
     }
 
     .button-row {
@@ -450,7 +542,7 @@
     }
 
     .pill-grid {
-      margin-top: 30px;
+      margin-top: 26px;
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
@@ -468,9 +560,7 @@
       border-radius: 22px;
     }
 
-    .mini-panel {
-      padding: 18px;
-    }
+    .mini-panel { padding: 18px; }
 
     .mini-icon,
     .section-icon {
@@ -485,11 +575,7 @@
       font-size: 18px;
     }
 
-    .mini-title {
-      margin-top: 14px;
-      font-size: 15px;
-      font-weight: 700;
-    }
+    .mini-title { margin-top: 14px; font-size: 15px; font-weight: 700; }
 
     .mini-copy {
       margin-top: 8px;
@@ -513,13 +599,9 @@
       padding: 18px;
     }
 
-    .contact-link:hover {
-      background: rgba(255, 255, 255, 0.08);
-    }
+    .contact-link:hover { background: rgba(255, 255, 255, 0.08); }
 
-    .section-head {
-      margin-bottom: 32px;
-    }
+    .section-head { margin-bottom: 22px; }
 
     .section-kicker {
       font-size: 12px;
@@ -543,15 +625,8 @@
       color: var(--muted);
     }
 
-    .copy-block {
-      font-size: 15px;
-      line-height: 1.9;
-      color: var(--soft);
-    }
-
-    .copy-block.muted {
-      color: var(--muted);
-    }
+    .copy-block { font-size: 15px; line-height: 1.9; color: var(--soft); }
+    .copy-block.muted { color: var(--muted); }
 
     .feature-list {
       display: grid;
@@ -571,19 +646,26 @@
       font-size: 14px;
     }
 
-    .feature-item span:first-child {
-      color: var(--accent);
-      flex: 0 0 auto;
+    .feature-item span:first-child { color: var(--accent); flex: 0 0 auto; }
+
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 14px 0 26px;
     }
 
-    .experience-list {
-      display: grid;
-      gap: 22px;
+    .filter-chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--muted);
     }
 
-    .experience-card {
-      padding: 30px;
-    }
+    .experience-list { display: grid; gap: 22px; }
+
+    .experience-card { padding: 30px; }
 
     .experience-grid {
       display: grid;
@@ -601,6 +683,7 @@
       border: 1px solid var(--border);
       color: var(--soft);
       font-size: 14px;
+      width: fit-content;
     }
 
     .company {
@@ -617,21 +700,27 @@
       color: var(--muted);
     }
 
-    .date {
-      color: #b9f5fe;
-      margin-top: 18px;
-    }
+    .date { color: #b9f5fe; margin-top: 18px; }
 
-    .highlights {
-      display: grid;
-      gap: 12px;
-    }
+    .highlights { display: grid; gap: 12px; }
+
+    .highlights.collapsed .highlight:nth-child(n+4) { display: none; }
 
     .highlight {
       padding: 16px;
       font-size: 14px;
       line-height: 1.8;
       color: var(--soft);
+    }
+
+    .collapse-toggle {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text);
+      width: fit-content;
     }
 
     .tag-cloud {
@@ -647,17 +736,16 @@
       background: rgba(103, 232, 249, 0.1);
       color: #d5fbff;
       font-size: 14px;
+      cursor: pointer;
+      user-select: none;
     }
 
-    .group-card {
-      padding: 24px;
-    }
+    .tag:hover { background: rgba(103, 232, 249, 0.16); }
 
-    .group-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 18px;
-    }
+    .tag.match-hidden { display: none !important; }
+
+    .group-card { padding: 24px; }
+    .group-list { display: grid; gap: 12px; margin-top: 18px; }
 
     .chip {
       padding: 14px 16px;
@@ -665,13 +753,92 @@
       line-height: 1.7;
       color: var(--soft);
       background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip:hover { background: rgba(255, 255, 255, 0.07); }
+    .chip.match-hidden { display: none !important; }
+
+    .group-card.match-hidden { display: none !important; }
+
+    .search-wrap {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
     }
 
-    .quick-stack {
-      display: grid;
-      gap: 12px;
-      margin-top: 24px;
+    .search-input {
+      flex: 1;
+      min-width: 240px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: rgba(7, 13, 24, 0.46);
+      color: var(--text);
+      outline: none;
     }
+    .search-input::placeholder { color: rgba(167, 181, 201, 0.9); }
+
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .spotlight-meta {
+      margin-top: 14px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .spotlight-metrics {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .metric {
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 20px;
+      padding: 14px 14px;
+    }
+
+    .metric-number { font-size: 20px; font-weight: 850; color: #dffcff; }
+    .metric-label {
+      margin-top: 6px;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .spotlight-controls {
+      margin-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .spotlight-nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .quick-stack { display: grid; gap: 12px; margin-top: 24px; }
 
     .quick-button,
     .copy-button {
@@ -697,10 +864,7 @@
       color: var(--text);
     }
 
-    .icon-right {
-      color: var(--accent);
-      font-size: 20px;
-    }
+    .icon-right { color: var(--accent); font-size: 20px; }
 
     .footer-note {
       margin-top: 26px;
@@ -709,19 +873,51 @@
       font-size: 13px;
     }
 
+    .fab {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      display: grid;
+      gap: 10px;
+      z-index: 65;
+      pointer-events: none;
+    }
+
+    .fab-btn {
+      pointer-events: auto;
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: rgba(8, 15, 28, 0.86);
+      border: 1px solid var(--border);
+      color: var(--text);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+    }
+
+    .fab-btn.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
     @media (max-width: 980px) {
       .grid-hero,
       .grid-two,
       .grid-split,
       .experience-grid,
       .grid-three,
-      .pill-grid {
+      .pill-grid,
+      .stats-row,
+      .spotlight-metrics {
         grid-template-columns: 1fr;
       }
 
-      .nav {
-        display: none;
-      }
+      .nav { display: none; }
 
       .menu-toggle {
         display: inline-flex;
@@ -730,29 +926,18 @@
       }
 
       .card-inner,
-      .experience-card {
-        padding: 24px;
-      }
+      .experience-card { padding: 24px; }
 
-      .company {
-        font-size: 25px;
-      }
+      .company { font-size: 25px; }
     }
 
     @media (max-width: 640px) {
-      .shell {
-        padding: 16px 12px 34px;
-      }
+      .shell { padding: 16px 12px 34px; }
 
-      .topbar {
-        top: 10px;
-        border-radius: 22px;
-      }
+      .topbar { top: 10px; border-radius: 22px; }
 
       .hero-copy,
-      .section-subtitle {
-        font-size: 15px;
-      }
+      .section-subtitle { font-size: 15px; }
 
       .cta,
       .ghost {
@@ -760,31 +945,38 @@
         justify-content: center;
       }
 
-      .button-row {
-        flex-direction: column;
-      }
+      .button-row { flex-direction: column; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .bg-fluid,
-      .bg-grid,
-      .blur-orb {
-        animation: none;
-      }
+      html { scroll-behavior: auto; }
+      .bg-fluid, .bg-grid, .blur-orb { animation: none; }
+      .reveal { transition: none; transform: none; opacity: 1; }
+      .fab-btn { transition: none; }
     }
   </style>
 </head>
 <body>
+  <a class="skip-link" href="#mainContent">Skip to content</a>
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <div class="bg-fluid"></div>
   <div class="bg-grid"></div>
   <div class="blur-orb orb-1"></div>
   <div class="blur-orb orb-2"></div>
   <div class="blur-orb orb-3"></div>
 
+  <div class="fab" aria-label="Quick actions">
+    <button class="fab-btn" id="fabContact" type="button" title="Contact" aria-label="Contact">✉</button>
+    <button class="fab-btn" id="fabPrint" type="button" title="Print / Save PDF" aria-label="Print or save as PDF">⎙</button>
+    <button class="fab-btn" id="fabTop" type="button" title="Back to top" aria-label="Back to top">↑</button>
+  </div>
+
   <div class="shell">
     <header class="topbar">
       <div class="topbar-row">
-        <button class="brand" type="button" data-page="home">
+        <button class="brand" type="button" data-page="home" aria-label="Go to Home">
           <div class="brand-kicker">Portfolio Resume</div>
           <div class="brand-name">Gunnar Patterson</div>
         </button>
@@ -797,7 +989,7 @@
           <button type="button" data-page="contact">Contact</button>
         </nav>
 
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation">☰</button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobileNav">☰</button>
       </div>
 
       <div class="mobile-nav" id="mobileNav">
@@ -809,7 +1001,7 @@
       </div>
     </header>
 
-    <main>
+    <main id="mainContent" tabindex="-1">
       <section class="page active" id="page-home">
         <div class="grid-hero">
           <article class="card hero-card">
@@ -819,6 +1011,21 @@
               <p class="hero-copy">
                 Event and hospitality professional with experience in large-scale events, logistics, guest service, and day-to-day operations.
               </p>
+
+              <div class="stats-row" aria-label="Highlights">
+                <div class="stat">
+                  <div class="stat-number" data-count="800" data-suffix="+">0+</div>
+                  <div class="stat-label">Event hours</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number" data-count="2" data-suffix="">0</div>
+                  <div class="stat-label">Festival seasons</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number" data-count="5" data-suffix="+">0+</div>
+                  <div class="stat-label">Years service</div>
+                </div>
+              </div>
 
               <div class="button-row">
                 <button class="cta" type="button" data-page="experience">View Experience</button>
@@ -891,6 +1098,48 @@
                 </div>
               </div>
             </article>
+
+            <article class="card" id="spotlightCard">
+              <div class="card-inner">
+                <div class="label">Spotlight</div>
+                <h3 style="font-size: 22px; font-weight: 800; margin-top: 16px;">Tap through the highlights</h3>
+                <p class="copy-block muted" style="margin-top: 12px;">
+                  Quick skim of the strongest role examples. Use the arrows, then jump straight to the full entry.
+                </p>
+
+                <div id="spotlightBody" style="margin-top: 18px;">
+                  <div class="role-chip" id="spotlightRoleChip"><span>🎪</span><span>Event Management Intern</span></div>
+                  <div class="company" id="spotlightCompany" style="font-size: 24px; margin-top: 14px;">Holywood Productions</div>
+                  <div class="spotlight-meta" id="spotlightMeta">Gaffney, SC • May 2024 – Aug 2024 • May 2025 – Aug 2025</div>
+                  <p class="copy-block" id="spotlightSummary" style="margin-top: 14px;">
+                    Supported large-scale events and activations with hands-on logistics, vendor support, and on-site problem solving.
+                  </p>
+
+                  <div class="spotlight-metrics" aria-label="Spotlight metrics">
+                    <div class="metric">
+                      <div class="metric-number" id="spotlightMetric1">800+</div>
+                      <div class="metric-label" id="spotlightMetricLabel1">Hours</div>
+                    </div>
+                    <div class="metric">
+                      <div class="metric-number" id="spotlightMetric2">CCMF</div>
+                      <div class="metric-label" id="spotlightMetricLabel2">Festival</div>
+                    </div>
+                    <div class="metric">
+                      <div class="metric-number" id="spotlightMetric3">NASCAR</div>
+                      <div class="metric-label" id="spotlightMetricLabel3">Activation</div>
+                    </div>
+                  </div>
+
+                  <div class="spotlight-controls">
+                    <div class="spotlight-nav">
+                      <button class="icon-btn" type="button" id="spotlightPrev" aria-label="Previous spotlight">←</button>
+                      <button class="icon-btn" type="button" id="spotlightNext" aria-label="Next spotlight">→</button>
+                    </div>
+                    <button class="ghost" type="button" id="spotlightJump">Jump to role</button>
+                  </div>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -936,8 +1185,16 @@
           <p class="section-subtitle">From hospitality and retail to major-event execution, Gunnar’s background shows reliability, guest awareness, and the ability to perform in demanding environments.</p>
         </div>
 
-        <div class="experience-list">
-          <article class="card experience-card">
+        <div class="filter-row" role="tablist" aria-label="Filter experience">
+          <button class="filter-chip active" type="button" data-filter="all">All</button>
+          <button class="filter-chip" type="button" data-filter="events">Events</button>
+          <button class="filter-chip" type="button" data-filter="hospitality">Hospitality</button>
+          <button class="filter-chip" type="button" data-filter="retail">Retail</button>
+          <button class="filter-chip" type="button" data-filter="volunteer">Volunteer</button>
+        </div>
+
+        <div class="experience-list" id="experienceList">
+          <article class="card experience-card" id="exp-best-western" data-type="hospitality">
             <div class="experience-grid">
               <div>
                 <div class="role-chip"><span>🏨</span><span>Front Desk Associate</span></div>
@@ -945,17 +1202,20 @@
                 <div class="location">Clemson, SC</div>
                 <div class="date">October 2025 – May 2026</div>
               </div>
-              <div class="highlights">
-                <div class="highlight">Managed front desk operations and welcomed guests in a fast-paced hospitality environment.</div>
-                <div class="highlight">Handled guest check-ins and check-outs while maintaining a professional first impression.</div>
-                <div class="highlight">Answered questions, resolved issues, and supported a smooth customer experience throughout each stay.</div>
-                <div class="highlight">Balanced phone communication, in-person service, and administrative front desk tasks efficiently.</div>
-                <div class="highlight">Strengthened hospitality, communication, and problem-solving skills in a customer-facing role.</div>
+              <div>
+                <div class="highlights collapsed">
+                  <div class="highlight">Managed front desk operations and welcomed guests in a fast-paced hospitality environment.</div>
+                  <div class="highlight">Handled guest check-ins and check-outs while maintaining a professional first impression.</div>
+                  <div class="highlight">Answered questions, resolved issues, and supported a smooth customer experience throughout each stay.</div>
+                  <div class="highlight">Balanced phone communication, in-person service, and administrative front desk tasks efficiently.</div>
+                  <div class="highlight">Strengthened hospitality, communication, and problem-solving skills in a customer-facing role.</div>
+                </div>
+                <button class="collapse-toggle" type="button" data-collapse>Show all highlights</button>
               </div>
             </div>
           </article>
 
-          <article class="card experience-card">
+          <article class="card experience-card" id="exp-holywood" data-type="events">
             <div class="experience-grid">
               <div>
                 <div class="role-chip"><span>🎪</span><span>Event Management Intern</span></div>
@@ -963,18 +1223,21 @@
                 <div class="location">Gaffney, SC</div>
                 <div class="date">May 2024 – August 2024 • May 2025 – August 2025</div>
               </div>
-              <div class="highlights">
-                <div class="highlight">Completed over 800 hours of immersive event planning and execution experience.</div>
-                <div class="highlight">Helped deliver major live events including the Carolina Country Music Festival.</div>
-                <div class="highlight">Supported logistics, vendor coordination, and on-site operations in fast-paced environments.</div>
-                <div class="highlight">Assisted with a large professional LIUNA booth activation at the NASCAR Cup Series in Nashville, Tennessee.</div>
-                <div class="highlight">Developed hands-on experience transporting equipment and event materials over long distances using large vehicles.</div>
-                <div class="highlight">Worked across diverse teams to create smooth attendee experiences and successful event outcomes.</div>
+              <div>
+                <div class="highlights collapsed">
+                  <div class="highlight">Completed over 800 hours of immersive event planning and execution experience.</div>
+                  <div class="highlight">Helped deliver major live events including the Carolina Country Music Festival.</div>
+                  <div class="highlight">Supported logistics, vendor coordination, and on-site operations in fast-paced environments.</div>
+                  <div class="highlight">Assisted with a large professional LIUNA booth activation at the NASCAR Cup Series in Nashville, Tennessee.</div>
+                  <div class="highlight">Developed hands-on experience transporting equipment and event materials over long distances using large vehicles.</div>
+                  <div class="highlight">Worked across diverse teams to create smooth attendee experiences and successful event outcomes.</div>
+                </div>
+                <button class="collapse-toggle" type="button" data-collapse>Show all highlights</button>
               </div>
             </div>
           </article>
 
-          <article class="card experience-card">
+          <article class="card experience-card" id="exp-food-lion" data-type="retail">
             <div class="experience-grid">
               <div>
                 <div class="role-chip"><span>🛒</span><span>Grocery Associate</span></div>
@@ -982,17 +1245,20 @@
                 <div class="location">Central, SC</div>
                 <div class="date">April 2019 – January 2024</div>
               </div>
-              <div class="highlights">
-                <div class="highlight">Maintained floor displays and replenished merchandise to keep presentation standards high.</div>
-                <div class="highlight">Assisted customers quickly and effectively, improving the in-store experience.</div>
-                <div class="highlight">Managed inventory scanning, counting, and discrepancy reporting for department leadership.</div>
-                <div class="highlight">Kept aisles and displays clean, organized, and customer-ready in a busy retail environment.</div>
-                <div class="highlight">Brought long-term consistency and reliability across both Blacksburg and Central store locations.</div>
+              <div>
+                <div class="highlights collapsed">
+                  <div class="highlight">Maintained floor displays and replenished merchandise to keep presentation standards high.</div>
+                  <div class="highlight">Assisted customers quickly and effectively, improving the in-store experience.</div>
+                  <div class="highlight">Managed inventory scanning, counting, and discrepancy reporting for department leadership.</div>
+                  <div class="highlight">Kept aisles and displays clean, organized, and customer-ready in a busy retail environment.</div>
+                  <div class="highlight">Brought long-term consistency and reliability across both Blacksburg and Central store locations.</div>
+                </div>
+                <button class="collapse-toggle" type="button" data-collapse>Show all highlights</button>
               </div>
             </div>
           </article>
 
-          <article class="card experience-card">
+          <article class="card experience-card" id="exp-clemson-parks" data-type="volunteer">
             <div class="experience-grid">
               <div>
                 <div class="role-chip"><span>🌳</span><span>Volunteer</span></div>
@@ -1000,11 +1266,14 @@
                 <div class="location">Clemson, SC</div>
                 <div class="date">March 2023</div>
               </div>
-              <div class="highlights">
-                <div class="highlight">Engaged professionally with community members and staff to support recreation initiatives.</div>
-                <div class="highlight">Maintained communication with staff about volunteer opportunities and events.</div>
-                <div class="highlight">Helped build local partnerships that supported community programming.</div>
-                <div class="highlight">Provided IT support for older community members to improve digital access.</div>
+              <div>
+                <div class="highlights collapsed">
+                  <div class="highlight">Engaged professionally with community members and staff to support recreation initiatives.</div>
+                  <div class="highlight">Maintained communication with staff about volunteer opportunities and events.</div>
+                  <div class="highlight">Helped build local partnerships that supported community programming.</div>
+                  <div class="highlight">Provided IT support for older community members to improve digital access.</div>
+                </div>
+                <button class="collapse-toggle" type="button" data-collapse>Show all highlights</button>
               </div>
             </div>
           </article>
@@ -1022,7 +1291,16 @@
           <article class="card">
             <div class="card-inner">
               <h3 style="font-size: 26px; font-weight: 700;">At a glance</h3>
-              <div class="tag-cloud">
+
+              <div class="search-wrap">
+                <input class="search-input" id="skillSearch" type="search" placeholder="Search skills (try: logistics, guest, AI)..." autocomplete="off" />
+                <button class="ghost" id="clearSkillSearch" type="button">Clear</button>
+              </div>
+              <p class="copy-block muted" id="skillSearchStatus" style="margin-top: 12px; font-size: 14px;">
+                Tip: click any skill chip to auto-search it.
+              </p>
+
+              <div class="tag-cloud" id="tagCloud">
                 <div class="tag">Event Planning and Management</div>
                 <div class="tag">Logistics and Transportation</div>
                 <div class="tag">Customer Service Excellence</div>
@@ -1040,7 +1318,7 @@
             </div>
           </article>
 
-          <div class="grid-three">
+          <div class="grid-three" id="skillGroups">
             <article class="card group-card">
               <h3 style="font-size: 20px; font-weight: 700;">Event &amp; Operations</h3>
               <div class="group-list">
@@ -1169,65 +1447,441 @@
   </div>
 
   <script>
-    const pages = ["home", "about", "experience", "skills", "contact"];
-    const pageEls = Object.fromEntries(
-      pages.map((page) => [page, document.getElementById(`page-${page}`)])
-    );
+    const prefersReducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const toastEl = document.getElementById("toast");
 
+    function toast(message) {
+      if (!toastEl) return;
+      toastEl.textContent = message;
+      toastEl.classList.add("show");
+      window.clearTimeout(toastEl._t);
+      toastEl._t = window.setTimeout(() => toastEl.classList.remove("show"), 1700);
+    }
+
+    const pages = ["home", "about", "experience", "skills", "contact"];
+    const pageEls = Object.fromEntries(pages.map((page) => [page, document.getElementById(`page-${page}`)]));
     const navButtons = Array.from(document.querySelectorAll("[data-page]"));
     const mobileNav = document.getElementById("mobileNav");
     const menuToggle = document.getElementById("menuToggle");
+    const scrollProgress = document.getElementById("scrollProgress");
+    const mainContent = document.getElementById("mainContent");
+
+    const titleMap = {
+      home: "Gunnar Patterson | Resume Portfolio",
+      about: "About | Gunnar Patterson",
+      experience: "Experience | Gunnar Patterson",
+      skills: "Skills | Gunnar Patterson",
+      contact: "Contact | Gunnar Patterson",
+    };
+
+    let pendingScrollToId = null;
+
+    function getActivePageEl() {
+      return document.querySelector(".page.active");
+    }
+
+    function updateScrollProgress() {
+      if (!scrollProgress) return;
+      const active = getActivePageEl();
+      if (!active) return;
+
+      const doc = document.documentElement;
+      const scrollTop = window.pageYOffset || doc.scrollTop || 0;
+
+      const rect = active.getBoundingClientRect();
+      const pageTop = scrollTop + rect.top;
+      const pageHeight = active.scrollHeight;
+
+      const viewport = window.innerHeight;
+      const max = Math.max(1, pageHeight - viewport);
+      const progress = Math.min(1, Math.max(0, (scrollTop - pageTop) / max));
+      scrollProgress.style.width = `${Math.round(progress * 100)}%`;
+    }
+
+    function closeMobileNav() {
+      mobileNav?.classList.remove("open");
+      if (menuToggle) menuToggle.setAttribute("aria-expanded", "false");
+    }
+
+    function openMobileNav() {
+      mobileNav?.classList.add("open");
+      if (menuToggle) menuToggle.setAttribute("aria-expanded", "true");
+    }
 
     function setActivePage(page, updateHash = true) {
       const safePage = pages.includes(page) ? page : "home";
 
       pages.forEach((name) => {
-        pageEls[name].classList.toggle("active", name === safePage);
+        pageEls[name]?.classList.toggle("active", name === safePage);
       });
 
       navButtons.forEach((button) => {
-        button.classList.toggle("active", button.dataset.page === safePage);
+        const isActive = button.dataset.page === safePage;
+        button.classList.toggle("active", isActive);
+        if (isActive) {
+          button.setAttribute("aria-current", "page");
+        } else {
+          button.removeAttribute("aria-current");
+        }
       });
 
       if (updateHash) {
         history.replaceState(null, "", `#${safePage}`);
       }
 
-      mobileNav.classList.remove("open");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      document.title = titleMap[safePage] || titleMap.home;
+
+      closeMobileNav();
+
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+      updateScrollProgress();
+
+      const heading = pageEls[safePage]?.querySelector("h1, h2");
+      if (heading) {
+        heading.setAttribute("tabindex", "-1");
+        heading.focus({ preventScroll: true });
+        heading.addEventListener("blur", () => heading.removeAttribute("tabindex"), { once: true });
+      } else {
+        mainContent?.focus({ preventScroll: true });
+      }
+
+      setupRevealForPage(pageEls[safePage]);
+
+      if (pendingScrollToId) {
+        const id = pendingScrollToId;
+        pendingScrollToId = null;
+        window.setTimeout(() => {
+          const el = document.getElementById(id);
+          if (el) el.scrollIntoView({ behavior: prefersReducedMotion ? "auto" : "smooth", block: "start" });
+        }, 40);
+      }
+
+      if (safePage === "home") {
+        kickCounters();
+      }
     }
 
     navButtons.forEach((button) => {
       button.addEventListener("click", () => setActivePage(button.dataset.page));
     });
 
-    menuToggle.addEventListener("click", () => {
-      mobileNav.classList.toggle("open");
+    menuToggle?.addEventListener("click", () => {
+      const isOpen = mobileNav?.classList.contains("open");
+      if (isOpen) closeMobileNav();
+      else openMobileNav();
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!mobileNav || !menuToggle) return;
+      const target = e.target;
+      if (!(target instanceof Element)) return;
+      const isInside = mobileNav.contains(target) || menuToggle.contains(target);
+      if (!isInside) closeMobileNav();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeMobileNav();
     });
 
     window.addEventListener("hashchange", () => {
       setActivePage(location.hash.replace("#", "") || "home", false);
     });
 
-    setActivePage(location.hash.replace("#", "") || "home", false);
+    const revealObserver = ("IntersectionObserver" in window)
+      ? new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, { root: null, threshold: 0.12, rootMargin: "0px 0px -10% 0px" })
+      : null;
+
+    function setupRevealForPage(container) {
+      if (!container || !revealObserver) return;
+      const els = Array.from(container.querySelectorAll(".card"));
+      els.forEach((el) => {
+        if (!el.classList.contains("reveal")) el.classList.add("reveal");
+        revealObserver.observe(el);
+      });
+    }
+
+    async function copyToClipboard(value) {
+      try {
+        await navigator.clipboard.writeText(value);
+        toast("Copied to clipboard");
+        return true;
+      } catch {
+        const temp = document.createElement("textarea");
+        temp.value = value;
+        temp.setAttribute("readonly", "");
+        temp.style.position = "fixed";
+        temp.style.top = "-1000px";
+        document.body.appendChild(temp);
+        temp.select();
+        try {
+          document.execCommand("copy");
+          toast("Copied to clipboard");
+          return true;
+        } catch {
+          toast(`Copy manually: ${value}`);
+          return false;
+        } finally {
+          document.body.removeChild(temp);
+        }
+      }
+    }
 
     document.querySelectorAll("[data-copy]").forEach((button) => {
       button.addEventListener("click", async () => {
-        const value = button.getAttribute("data-copy");
+        const value = button.getAttribute("data-copy") || "";
         const icon = button.querySelector(".icon-right");
-        const original = icon.textContent;
-
-        try {
-          await navigator.clipboard.writeText(value);
-          icon.textContent = "✓";
-          setTimeout(() => {
-            icon.textContent = original;
-          }, 1400);
-        } catch (error) {
-          alert(`Copy this manually: ${value}`);
+        const original = icon?.textContent || "⧉";
+        const ok = await copyToClipboard(value);
+        if (icon) {
+          icon.textContent = ok ? "✓" : original;
+          setTimeout(() => { icon.textContent = original; }, 1400);
         }
       });
     });
+
+    document.querySelectorAll("[data-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const filter = btn.getAttribute("data-filter") || "all";
+        document.querySelectorAll("[data-filter]").forEach((b) => b.classList.toggle("active", b === btn));
+        document.querySelectorAll("#experienceList [data-type]").forEach((card) => {
+          const type = card.getAttribute("data-type");
+          card.hidden = filter !== "all" && type !== filter;
+        });
+        toast(filter === "all" ? "Showing all roles" : `Filtered: ${filter}`);
+        updateScrollProgress();
+      });
+    });
+
+    document.querySelectorAll("[data-collapse]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const wrap = btn.previousElementSibling;
+        if (!(wrap instanceof Element) || !wrap.classList.contains("highlights")) return;
+
+        const isCollapsed = wrap.classList.toggle("collapsed");
+        btn.textContent = isCollapsed ? "Show all highlights" : "Show fewer highlights";
+        updateScrollProgress();
+      });
+    });
+
+    const skillSearch = document.getElementById("skillSearch");
+    const clearSkillSearch = document.getElementById("clearSkillSearch");
+    const skillStatus = document.getElementById("skillSearchStatus");
+    const skillTags = Array.from(document.querySelectorAll("#tagCloud .tag"));
+    const skillChips = Array.from(document.querySelectorAll("#skillGroups .chip"));
+    const skillGroupCards = Array.from(document.querySelectorAll("#skillGroups .group-card"));
+
+    function applySkillFilter(term) {
+      const q = (term || "").trim().toLowerCase();
+      let shown = 0;
+
+      const match = (el) => el.textContent.toLowerCase().includes(q);
+
+      const apply = (el) => {
+        const hide = q && !match(el);
+        el.classList.toggle("match-hidden", hide);
+        if (!hide) shown += 1;
+      };
+
+      shown = 0;
+      skillTags.forEach(apply);
+      skillChips.forEach(apply);
+
+      skillGroupCards.forEach((card) => {
+        const visible = card.querySelectorAll(".chip:not(.match-hidden)").length;
+        card.classList.toggle("match-hidden", Boolean(q) && visible === 0);
+      });
+
+      if (skillStatus) {
+        if (!q) skillStatus.textContent = "Tip: click any skill chip to auto-search it.";
+        else skillStatus.textContent = `Showing ${shown} matches for “${term}”.`;
+      }
+    }
+
+    skillSearch?.addEventListener("input", () => applySkillFilter(skillSearch.value));
+
+    clearSkillSearch?.addEventListener("click", () => {
+      if (skillSearch) skillSearch.value = "";
+      applySkillFilter("");
+      toast("Cleared search");
+      skillSearch?.focus();
+    });
+
+    function setSkillSearch(term) {
+      if (!skillSearch) return;
+      skillSearch.value = term;
+      applySkillFilter(term);
+      toast(`Search: ${term}`);
+      skillSearch.focus();
+    }
+
+    [...skillTags, ...skillChips].forEach((el) => {
+      el.addEventListener("click", () => setSkillSearch(el.textContent.trim()));
+    });
+
+    const spotlights = [
+      {
+        emoji: "🎪",
+        title: "Event Management Intern",
+        company: "Holywood Productions",
+        meta: "Gaffney, SC • May 2024 – Aug 2024 • May 2025 – Aug 2025",
+        summary: "Supported large-scale events and activations with hands-on logistics, vendor support, and on-site problem solving.",
+        metrics: [
+          ["800+", "Hours"],
+          ["CCMF", "Festival"],
+          ["NASCAR", "Activation"],
+        ],
+        jumpId: "exp-holywood",
+      },
+      {
+        emoji: "🏨",
+        title: "Front Desk Associate",
+        company: "Best Western Plus",
+        meta: "Clemson, SC • Oct 2025 – May 2026",
+        summary: "Handled guest service, front desk operations, and issue resolution while keeping the experience smooth and professional.",
+        metrics: [
+          ["Fast", "Service"],
+          ["Guest", "Experience"],
+          ["Ops", "Reliability"],
+        ],
+        jumpId: "exp-best-western",
+      },
+      {
+        emoji: "🛒",
+        title: "Grocery Associate",
+        company: "Food Lion Grocery",
+        meta: "Central, SC • Apr 2019 – Jan 2024",
+        summary: "Built long-term consistency in a high-traffic store environment: displays, inventory, and customer support.",
+        metrics: [
+          ["4+", "Years"],
+          ["Inventory", "Support"],
+          ["Customer", "Service"],
+        ],
+        jumpId: "exp-food-lion",
+      },
+      {
+        emoji: "🌳",
+        title: "Volunteer",
+        company: "City of Clemson Parks and Recreation",
+        meta: "Clemson, SC • Mar 2023",
+        summary: "Supported community programming, helped build relationships, and provided IT help to older community members.",
+        metrics: [
+          ["Community", "Support"],
+          ["Partnerships", "Helped"],
+          ["IT", "Assist"],
+        ],
+        jumpId: "exp-clemson-parks",
+      },
+    ];
+
+    let spotlightIndex = 0;
+    const elRoleChip = document.getElementById("spotlightRoleChip");
+    const elCompany = document.getElementById("spotlightCompany");
+    const elMeta = document.getElementById("spotlightMeta");
+    const elSummary = document.getElementById("spotlightSummary");
+    const m1 = document.getElementById("spotlightMetric1");
+    const m2 = document.getElementById("spotlightMetric2");
+    const m3 = document.getElementById("spotlightMetric3");
+    const ml1 = document.getElementById("spotlightMetricLabel1");
+    const ml2 = document.getElementById("spotlightMetricLabel2");
+    const ml3 = document.getElementById("spotlightMetricLabel3");
+    const spotlightPrev = document.getElementById("spotlightPrev");
+    const spotlightNext = document.getElementById("spotlightNext");
+    const spotlightJump = document.getElementById("spotlightJump");
+
+    function renderSpotlight(i) {
+      const s = spotlights[i];
+      if (!s) return;
+      if (elRoleChip) elRoleChip.innerHTML = `<span>${s.emoji}</span><span>${s.title}</span>`;
+      if (elCompany) elCompany.textContent = s.company;
+      if (elMeta) elMeta.textContent = s.meta;
+      if (elSummary) elSummary.textContent = s.summary;
+      if (m1) m1.textContent = s.metrics[0][0];
+      if (ml1) ml1.textContent = s.metrics[0][1];
+      if (m2) m2.textContent = s.metrics[1][0];
+      if (ml2) ml2.textContent = s.metrics[1][1];
+      if (m3) m3.textContent = s.metrics[2][0];
+      if (ml3) ml3.textContent = s.metrics[2][1];
+    }
+
+    spotlightPrev?.addEventListener("click", () => {
+      spotlightIndex = (spotlightIndex - 1 + spotlights.length) % spotlights.length;
+      renderSpotlight(spotlightIndex);
+    });
+
+    spotlightNext?.addEventListener("click", () => {
+      spotlightIndex = (spotlightIndex + 1) % spotlights.length;
+      renderSpotlight(spotlightIndex);
+    });
+
+    spotlightJump?.addEventListener("click", () => {
+      const s = spotlights[spotlightIndex];
+      if (!s) return;
+      pendingScrollToId = s.jumpId;
+      setActivePage("experience");
+    });
+
+    function animateNumber(el, to, suffix) {
+      const start = 0;
+      const duration = prefersReducedMotion ? 0 : 900;
+      const t0 = performance.now();
+
+      function step(now) {
+        const p = duration ? Math.min(1, (now - t0) / duration) : 1;
+        const value = Math.round(start + (to - start) * (1 - Math.pow(1 - p, 3)));
+        el.textContent = `${value}${suffix || ""}`;
+        if (p < 1) requestAnimationFrame(step);
+      }
+
+      requestAnimationFrame(step);
+    }
+
+    function kickCounters() {
+      const home = pageEls.home;
+      if (!home) return;
+      const nums = Array.from(home.querySelectorAll(".stat-number[data-count]"));
+      nums.forEach((el) => {
+        if (el.dataset.counted === "true") return;
+        el.dataset.counted = "true";
+        const to = Number(el.dataset.count || "0");
+        const suffix = el.dataset.suffix || "";
+        animateNumber(el, to, suffix);
+      });
+    }
+
+    const fabTop = document.getElementById("fabTop");
+    const fabContact = document.getElementById("fabContact");
+    const fabPrint = document.getElementById("fabPrint");
+
+    function updateFab() {
+      const y = window.scrollY || 0;
+      const show = y > 280;
+      fabTop?.classList.toggle("show", show);
+      fabPrint?.classList.toggle("show", show);
+      fabContact?.classList.toggle("show", true);
+      updateScrollProgress();
+    }
+
+    fabTop?.addEventListener("click", () => window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" }));
+    fabContact?.addEventListener("click", () => setActivePage("contact"));
+    fabPrint?.addEventListener("click", () => window.print());
+
+    window.addEventListener("scroll", updateFab, { passive: true });
+    window.addEventListener("resize", updateScrollProgress);
+
+    renderSpotlight(spotlightIndex);
+    setActivePage(location.hash.replace("#", "") || "home", false);
+    setupRevealForPage(getActivePageEl());
+    kickCounters();
+    updateFab();
+    updateScrollProgress();
+    applySkillFilter("");
   </script>
 </body>
 </html>
