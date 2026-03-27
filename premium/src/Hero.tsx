@@ -1,5 +1,4 @@
 import * as React from "react";
-import Hls from "hls.js";
 import { motion, useScroll, useSpring } from "motion/react";
 import {
   ArrowRight,
@@ -13,16 +12,13 @@ import {
 import { cn } from "./lib/cn";
 import { InfiniteSlider } from "./components/ui/infinite-slider";
 
-const HLS_URL =
-  "https://customer-cbeadsgr09pnsezs.cloudflarestream.com/697945ca6b876878dba3b23fbd2f1561/manifest/video.m3u8";
+type ExperienceCategory =
+  | "all"
+  | "events"
+  | "hospitality"
+  | "retail"
+  | "volunteer";
 
-// IMPORTANT:
-// Put your fallback MP4 here (Vite serves /public at the root):
-// premium/public/_videos/v1/f0c78f536d5f21a047fb7792723a36f9d647daa1
-// If your file is actually .mp4, update this constant accordingly.
-const FALLBACK_MP4 = "/_videos/v1/f0c78f536d5f21a047fb7792723a36f9d647daa1";
-
-type ExperienceCategory = "all" | "events" | "hospitality" | "retail" | "volunteer";
 type Experience = {
   id: string;
   category: Exclude<ExperienceCategory, "all">;
@@ -158,118 +154,26 @@ const SKILL_GROUPS = [
   },
   {
     title: "Technical & Creative",
-    items: ["Advanced Software Skills", "AI Technology Familiarity", "Creative Problem-Solving"],
+    items: [
+      "Advanced Software Skills",
+      "AI Technology Familiarity",
+      "Creative Problem-Solving",
+    ],
   },
 ];
 
-const logos = [
-  { src: "https://html.tailus.io/blocks/customers/openai.svg", alt: "OpenAI" },
-  { src: "https://html.tailus.io/blocks/customers/nvidia.svg", alt: "NVIDIA" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/github.svg", alt: "GitHub" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/vercel.svg", alt: "Vercel" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/react.svg", alt: "React" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/vite.svg", alt: "Vite" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/tailwindcss.svg", alt: "Tailwind CSS" },
-  { src: "https://cdn.jsdelivr.net/npm/simple-icons@v16/icons/cloudflare.svg", alt: "Cloudflare" },
+const HIGHLIGHT_TICKER = [
+  { alt: "Festival logistics + on-site ops" },
+  { alt: "Front desk + guest experience" },
+  { alt: "Vendor coordination" },
+  { alt: "Fast problem-solving under pressure" },
+  { alt: "Team collaboration" },
+  { alt: "Transport + equipment handling" },
+  { alt: "Inventory scanning + reporting" },
+  { alt: "Professional communication" },
+  { alt: "Software fluency + AI familiarity" },
+  { alt: "Detail-oriented execution" },
 ];
-
-type VideoState = "loading" | "ready" | "fallback" | "failed";
-
-/**
- * HLS (hls.js) -> fallback MP4 -> placeholder if both fail
- * Also avoids the common “it’s playing but invisible” issue by not relying only on mix-blend-screen.
- */
-function useHlsVideo(videoRef: React.RefObject<HTMLVideoElement>) {
-  const [state, setState] = React.useState<VideoState>("loading");
-
-  React.useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    // Helpful for some providers / CDNs
-    video.crossOrigin = "anonymous";
-
-    let hls: Hls | null = null;
-    let cancelled = false;
-
-    const markReady = () => setState((s) => (s === "failed" ? s : "ready"));
-    const markFailed = () => setState("failed");
-
-    video.addEventListener("playing", markReady);
-    video.addEventListener("loadeddata", markReady);
-    video.addEventListener("error", markFailed);
-
-    const playSafe = async () => {
-      try {
-        await video.play();
-      } catch {
-        // autoplay can be blocked; click-to-play still works
-      }
-    };
-
-    const setFallback = async () => {
-      if (cancelled) return;
-      setState("fallback");
-      if (hls) {
-        hls.destroy();
-        hls = null;
-      }
-      video.src = FALLBACK_MP4;
-      video.load();
-      await playSafe();
-    };
-
-    // iOS Safari can play HLS natively
-    const canPlayNative = video.canPlayType("application/vnd.apple.mpegurl");
-    if (canPlayNative) {
-      video.src = HLS_URL;
-      playSafe();
-      return () => {
-        cancelled = true;
-        video.removeEventListener("playing", markReady);
-        video.removeEventListener("loadeddata", markReady);
-        video.removeEventListener("error", markFailed);
-      };
-    }
-
-    if (Hls.isSupported()) {
-      hls = new Hls({
-        lowLatencyMode: true,
-        backBufferLength: 60,
-        enableWorker: true,
-      });
-
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-        if (cancelled) return;
-        try {
-          hls?.loadSource(HLS_URL);
-        } catch {
-          setFallback();
-        }
-      });
-
-      hls.on(Hls.Events.ERROR, (_, data) => {
-        if (!data?.fatal) return;
-        setFallback();
-      });
-
-      playSafe();
-    } else {
-      setFallback();
-    }
-
-    return () => {
-      cancelled = true;
-      if (hls) hls.destroy();
-      video.removeEventListener("playing", markReady);
-      video.removeEventListener("loadeddata", markReady);
-      video.removeEventListener("error", markFailed);
-    };
-  }, [videoRef]);
-
-  return state;
-}
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
@@ -289,7 +193,13 @@ function GradientIcon({ children }: { children: React.ReactNode }) {
   );
 }
 
-function GlassCard({ className, children }: { className?: string; children: React.ReactNode }) {
+function GlassCard({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div
       className={cn(
@@ -313,13 +223,17 @@ function SectionHeading({
 }) {
   return (
     <div className="text-center">
-      <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">{kicker}</div>
+      <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+        {kicker}
+      </div>
       <h2 className="mt-3 text-balance text-3xl sm:text-4xl font-semibold tracking-tight">
         <span className="bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
           {title}
         </span>
       </h2>
-      <p className="mx-auto mt-4 max-w-2xl text-pretty text-white/70 leading-relaxed">{subtitle}</p>
+      <p className="mx-auto mt-4 max-w-2xl text-pretty text-white/70 leading-relaxed">
+        {subtitle}
+      </p>
     </div>
   );
 }
@@ -328,7 +242,9 @@ function useActiveSection(sectionIds: string[]) {
   const [active, setActive] = React.useState(sectionIds[0] ?? "home");
 
   React.useEffect(() => {
-    const els = sectionIds.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    const els = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
     if (!els.length) return;
 
     const io = new IntersectionObserver(
@@ -338,7 +254,7 @@ function useActiveSection(sectionIds: string[]) {
           .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0));
         if (visible[0]?.target?.id) setActive(visible[0].target.id);
       },
-      { root: null, threshold: [0.2, 0.35, 0.5], rootMargin: "-20% 0px -65% 0px" }
+      { threshold: [0.2, 0.35, 0.5], rootMargin: "-20% 0px -65% 0px" }
     );
 
     els.forEach((el) => io.observe(el));
@@ -357,10 +273,55 @@ async function copyToClipboard(value: string) {
   }
 }
 
-export default function Hero() {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-  const videoState = useHlsVideo(videoRef);
+function AuroraVisual() {
+  return (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-r from-[#FA93FA]/10 via-[#C967E8]/10 to-[#983AD6]/10" />
 
+      <motion.div
+        className="absolute -left-32 top-[-120px] h-[520px] w-[520px] rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at 30% 30%, rgba(250,147,250,0.28), transparent 60%)",
+        }}
+        animate={{ x: [0, 60, 0], y: [0, 30, 0] }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        className="absolute -right-40 top-[40px] h-[620px] w-[620px] rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at 40% 40%, rgba(152,58,214,0.22), transparent 60%)",
+        }}
+        animate={{ x: [0, -70, 0], y: [0, 40, 0] }}
+        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        className="absolute left-[20%] bottom-[-260px] h-[700px] w-[700px] rounded-full blur-3xl"
+        style={{
+          background:
+            "radial-gradient(circle at 50% 50%, rgba(201,103,232,0.18), transparent 62%)",
+        }}
+        animate={{ x: [0, 50, 0], y: [0, -35, 0] }}
+        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+      />
+
+      <motion.div
+        className="absolute inset-0 opacity-60"
+        style={{
+          background:
+            "linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.06) 18%, transparent 36%, rgba(255,255,255,0.04) 52%, transparent 68%)",
+        }}
+        animate={{ x: ["-25%", "25%", "-25%"] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+      />
+    </div>
+  );
+}
+
+export default function Hero() {
   const sections = ["home", "about", "experience", "skills", "contact"];
   const active = useActiveSection(sections);
 
@@ -375,41 +336,23 @@ export default function Hero() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 20 });
 
-  const visibleExperience = EXPERIENCE.filter((e) => (filter === "all" ? true : e.category === filter));
-  const groupMatches = (items: string[]) => (q ? items.filter((x) => x.toLowerCase().includes(q)) : items);
+  const visibleExperience = EXPERIENCE.filter((e) =>
+    filter === "all" ? true : e.category === filter
+  );
 
-  const onNav = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  const groupMatches = (items: string[]) =>
+    q ? items.filter((x) => x.toLowerCase().includes(q)) : items;
+
+  const onNav = (id: string) =>
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <div className="relative overflow-hidden">
-      {/* Scroll progress */}
       <motion.div
         style={{ scaleX: progress }}
         className="fixed left-0 top-0 z-50 h-[3px] w-full origin-left bg-gradient-to-r from-[#FA93FA] via-[#C967E8] to-[#983AD6]"
       />
 
-      {/* Background */}
-      <div className="pointer-events-none absolute inset-0">
-        <motion.div
-          className="absolute -left-40 top-[-180px] h-[560px] w-[560px] rounded-full blur-3xl"
-          style={{
-            background: "radial-gradient(circle at 30% 30%, rgba(250,147,250,0.22), transparent 60%)",
-          }}
-          animate={{ x: [0, 30, 0], y: [0, 18, 0] }}
-          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <motion.div
-          className="absolute -right-48 top-[120px] h-[620px] w-[620px] rounded-full blur-3xl"
-          style={{
-            background: "radial-gradient(circle at 40% 40%, rgba(152,58,214,0.20), transparent 60%)",
-          }}
-          animate={{ x: [0, -28, 0], y: [0, 22, 0] }}
-          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-        />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.06)_0%,transparent_55%)]" />
-      </div>
-
-      {/* Sticky nav */}
       <div className="sticky top-4 z-40 mx-auto max-w-6xl px-6">
         <div className="rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
@@ -425,8 +368,7 @@ export default function Hero() {
                   type="button"
                   onClick={() => onNav(id)}
                   className={cn(
-                    "rounded-2xl px-4 py-2 text-sm text-white/70 transition",
-                    "hover:bg-white/5 hover:text-white",
+                    "rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
                     active === id && "bg-white/5 text-white border border-white/10"
                   )}
                 >
@@ -456,7 +398,6 @@ export default function Hero() {
       </div>
 
       <main className="relative mx-auto max-w-6xl px-6 pb-24">
-        {/* HERO */}
         <section id="home" className="pt-20 sm:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
@@ -513,7 +454,10 @@ export default function Hero() {
 
             <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {STATS.map((s) => (
-                <div key={s.label} className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur">
+                <div
+                  key={s.label}
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur"
+                >
                   <div className="text-xl font-semibold text-white">{s.value}</div>
                   <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/55">{s.label}</div>
                 </div>
@@ -521,7 +465,6 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Spotlight + Contact/Education cards */}
           <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
             <GlassCard className="lg:col-span-2">
               <div className="p-6 sm:p-8">
@@ -577,10 +520,7 @@ export default function Hero() {
                         setFilter("all");
                         onNav("experience");
                         window.setTimeout(() => {
-                          document.getElementById(`exp-${spotlight.id}`)?.scrollIntoView({
-                            behavior: "smooth",
-                            block: "start",
-                          });
+                          document.getElementById(`exp-${spotlight.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
                         }, 250);
                       }}
                       className="rounded-2xl bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:-translate-y-[1px]"
@@ -624,11 +564,9 @@ export default function Hero() {
                       <span className="text-xs text-white/60">call</span>
                     </a>
 
-                    <div className="flex items-start justify-between gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                      <div className="flex items-start gap-3">
-                        <MapPin className="mt-0.5 h-4 w-4 text-white/70" />
-                        <span className="text-sm text-white/75 leading-relaxed">{PROFILE.location}</span>
-                      </div>
+                    <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                      <MapPin className="mt-0.5 h-4 w-4 text-white/70" />
+                      <span className="text-sm text-white/75 leading-relaxed">{PROFILE.location}</span>
                     </div>
                   </div>
                 </div>
@@ -653,62 +591,35 @@ export default function Hero() {
           </div>
         </section>
 
-        {/* VIDEO + LOGOS */}
         <section className="relative mt-16">
-          <div className="relative -mx-6 sm:-mx-10 lg:-mx-20">
-            <div className="relative">
-              {/* Base glow so this area never looks blank */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#FA93FA]/10 via-[#C967E8]/10 to-[#983AD6]/10" />
+          <div
+            className="relative"
+            style={{ width: "100vw", marginLeft: "calc(50% - 50vw)" }}
+          >
+            <div className="relative overflow-hidden">
+              <div className="relative h-[340px] sm:h-[420px]">
+                <AuroraVisual />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#010101] via-transparent to-[#010101]" />
+                <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#010101] to-transparent" />
+                <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#010101] to-transparent" />
+              </div>
 
-              <video
-                ref={videoRef}
-                className={cn(
-                  "relative z-10 w-full h-auto",
-                  // Keep the “premium” vibe but don’t let blend mode make it invisible
-                  "mix-blend-screen opacity-95"
-                )}
-                muted
-                playsInline
-                autoPlay
-                loop
-                preload="auto"
-                crossOrigin="anonymous"
-                onClick={() => videoRef.current?.play()}
-              />
+              <div className="relative z-20 border-t border-white/5 bg-black/20 backdrop-blur-sm">
+                <div className="mx-auto max-w-6xl px-6 py-7">
+                  <div className="flex flex-col gap-5 md:flex-row md:items-center">
+                    <div className="flex items-center gap-4 md:min-w-[240px]">
+                      <p className="text-sm font-medium text-white/70">Highlights</p>
+                      <div className="hidden h-8 w-px bg-white/10 md:block" />
+                    </div>
 
-              {/* If both HLS + fallback fail, show a nice animated gradient instead */}
-              {videoState === "failed" ? (
-                <motion.div
-                  className="absolute inset-0 z-0"
-                  style={{
-                    background:
-                      "radial-gradient(circle at 30% 30%, rgba(250,147,250,0.22), transparent 55%), radial-gradient(circle at 70% 40%, rgba(152,58,214,0.18), transparent 55%), radial-gradient(circle at 50% 80%, rgba(201,103,232,0.16), transparent 55%)",
-                  }}
-                  animate={{ opacity: [0.75, 1, 0.8], filter: ["blur(0px)", "blur(1px)", "blur(0px)"] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                />
-              ) : null}
-
-              {/* Fade overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#010101] via-transparent to-[#010101]" />
-            </div>
-          </div>
-
-          <div className="relative z-20 border-t border-white/5 bg-black/20 backdrop-blur-sm">
-            <div className="mx-auto max-w-6xl px-6 py-8">
-              <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                <div className="flex items-center gap-4 md:min-w-[240px]">
-                  <p className="text-sm font-medium text-white/70">Powering the best teams</p>
-                  <div className="hidden h-8 w-px bg-white/10 md:block" />
+                    <InfiniteSlider items={HIGHLIGHT_TICKER} speed={70} className="w-full" />
+                  </div>
                 </div>
-
-                <InfiniteSlider logos={logos} speed={80} className="w-full" itemClassName="h-7 md:h-8" />
               </div>
             </div>
           </div>
         </section>
 
-        {/* ABOUT */}
         <section id="about" className="mt-20">
           <SectionHeading
             kicker="Profile"
@@ -721,8 +632,8 @@ export default function Hero() {
               <div className="p-6 sm:p-8">
                 <div className="text-lg font-semibold">Professional Summary</div>
                 <p className="mt-4 text-white/75 leading-relaxed">
-                  Gunnar Patterson has a background in event operations, hospitality, guest service, and logistics. His experience includes
-                  live events, front desk work, and customer-facing roles that have built strong communication, organization, and problem-solving skills.
+                  Gunnar Patterson has a background in event operations, hospitality, guest service, and logistics. His experience includes live
+                  events, front desk work, and customer-facing roles that have built strong communication, organization, and problem-solving skills.
                 </p>
                 <p className="mt-4 text-white/60 leading-relaxed">
                   He works well in fast-paced environments where staying organized, helping people, and handling issues quickly all matter.
@@ -751,7 +662,6 @@ export default function Hero() {
           </div>
         </section>
 
-        {/* EXPERIENCE */}
         <section id="experience" className="mt-20">
           <SectionHeading
             kicker="Career"
@@ -774,8 +684,7 @@ export default function Hero() {
                 type="button"
                 onClick={() => setFilter(key)}
                 className={cn(
-                  "rounded-full px-4 py-2 text-sm border border-white/10 bg-white/5 text-white/70 transition",
-                  "hover:bg-white/10 hover:text-white",
+                  "rounded-full px-4 py-2 text-sm border border-white/10 bg-white/5 text-white/70 transition hover:bg-white/10 hover:text-white",
                   filter === key && "bg-white text-black"
                 )}
               >
@@ -814,6 +723,7 @@ export default function Hero() {
                             </li>
                           ))}
                         </ul>
+
                         {e.highlights.length > 3 ? (
                           <button
                             type="button"
@@ -832,7 +742,6 @@ export default function Hero() {
           </div>
         </section>
 
-        {/* SKILLS */}
         <section id="skills" className="mt-20">
           <SectionHeading
             kicker="Capabilities"
@@ -906,7 +815,6 @@ export default function Hero() {
           </div>
         </section>
 
-        {/* CONTACT */}
         <section id="contact" className="mt-20">
           <SectionHeading
             kicker="Connect"
@@ -921,8 +829,8 @@ export default function Hero() {
                   Open to opportunities in events, hospitality, tourism, and operations
                 </div>
                 <p className="mt-4 text-white/75 leading-relaxed">
-                  Gunnar has experience in live events, hospitality, guest service, and logistics. Email is the best way to reach him, and
-                  phone works well for quicker conversations.
+                  Gunnar has experience in live events, hospitality, guest service, and logistics. Email is the best way to reach him, and phone works
+                  well for quicker conversations.
                 </p>
 
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
@@ -1036,7 +944,6 @@ export default function Hero() {
         </section>
       </main>
 
-      {/* Floating quick actions */}
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
         <a
           href={PROFILE.resumeHref}
@@ -1064,15 +971,6 @@ export default function Hero() {
           ↑
         </button>
       </div>
-
-      {/* Small hint (only while loading) */}
-      {videoState === "loading" ? (
-        <div className="pointer-events-none fixed bottom-5 left-5 z-40 hidden sm:block">
-          <div className="rounded-full border border-white/10 bg-black/25 px-4 py-2 text-xs text-white/60 backdrop-blur">
-            Video loading…
-          </div>
-        </div>
-      ) : null}
     </div>
   );
 }

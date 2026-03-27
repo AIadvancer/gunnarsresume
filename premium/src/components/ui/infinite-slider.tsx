@@ -3,17 +3,23 @@ import useMeasure from "react-use-measure";
 import { motion, useAnimationFrame, useMotionValue } from "motion/react";
 import { cn } from "../../lib/cn";
 
-type Logo = { src: string; alt: string; href?: string };
+type SliderItem = {
+  // If src is provided → render image logo
+  src?: string;
+  // Used for alt text; if no src, this is also the pill label
+  alt: string;
+  href?: string;
+};
 
 type InfiniteSliderProps = {
-  logos: Logo[];
+  items: SliderItem[];
   speed?: number; // px/sec
   className?: string;
   itemClassName?: string;
 };
 
 export function InfiniteSlider({
-  logos,
+  items,
   speed = 70,
   className,
   itemClassName,
@@ -29,19 +35,16 @@ export function InfiniteSlider({
     const current = x.get();
     const next = current - (speed * delta) / 1000;
 
-    if (Math.abs(next) >= contentWidth) {
-      x.set(0);
-    } else {
-      x.set(next);
-    }
+    if (Math.abs(next) >= contentWidth) x.set(0);
+    else x.set(next);
   });
 
-  const rendered = (ariaHidden?: boolean) =>
-    logos.map((logo, i) => {
-      const Node = (
+  const renderItem = (it: SliderItem) => {
+    if (it.src) {
+      const node = (
         <img
-          src={logo.src}
-          alt={logo.alt}
+          src={it.src}
+          alt={it.alt}
           className={cn(
             "h-7 w-auto opacity-80 brightness-0 invert transition-opacity duration-300 hover:opacity-100",
             itemClassName
@@ -51,27 +54,46 @@ export function InfiniteSlider({
         />
       );
 
-      return (
-        <div
-          key={`${logo.alt}-${i}-${ariaHidden ? "dup" : "main"}`}
-          className="flex items-center px-6"
-          aria-hidden={ariaHidden ? "true" : undefined}
-        >
-          {logo.href ? (
-            <a
-              href={logo.href}
-              target="_blank"
-              rel="noreferrer"
-              className="block"
-            >
-              {Node}
-            </a>
-          ) : (
-            Node
-          )}
-        </div>
+      return it.href ? (
+        <a href={it.href} target="_blank" rel="noreferrer" className="block">
+          {node}
+        </a>
+      ) : (
+        node
       );
-    });
+    }
+
+    const pill = (
+      <span
+        className={cn(
+          "inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2",
+          "text-sm text-white/75 backdrop-blur-md transition-colors duration-300 hover:bg-white/10 hover:text-white",
+          itemClassName
+        )}
+      >
+        {it.alt}
+      </span>
+    );
+
+    return it.href ? (
+      <a href={it.href} target="_blank" rel="noreferrer" className="block">
+        {pill}
+      </a>
+    ) : (
+      pill
+    );
+  };
+
+  const rendered = (ariaHidden?: boolean) =>
+    items.map((it, i) => (
+      <div
+        key={`${it.alt}-${i}-${ariaHidden ? "dup" : "main"}`}
+        className="flex items-center px-3"
+        aria-hidden={ariaHidden ? "true" : undefined}
+      >
+        {renderItem(it)}
+      </div>
+    ));
 
   return (
     <div ref={wrapRef} className={cn("relative overflow-hidden", className)}>
@@ -80,6 +102,7 @@ export function InfiniteSlider({
           {rendered(false)}
         </div>
         <div className="flex shrink-0 items-center">{rendered(true)}</div>
+
         {wrapBounds.width > (bounds.width || 0) * 1.2 ? (
           <div className="flex shrink-0 items-center">{rendered(true)}</div>
         ) : null}
