@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { cn } from "./lib/cn";
 import { InfiniteSlider } from "./components/ui/infinite-slider";
+import { useToast } from "./components/ui/toast";
 
 type ExperienceCategory =
   | "all"
@@ -203,12 +204,39 @@ function GlassCard({
   return (
     <div
       className={cn(
-        "rounded-3xl border border-white/10 bg-white/[0.05] backdrop-blur-xl shadow-[0_30px_90px_rgba(0,0,0,0.45)]",
+        "relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] backdrop-blur-xl",
+        "shadow-[0_30px_90px_rgba(0,0,0,0.45)]",
+        "transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-1",
+        "transition-colors hover:border-white/20 hover:bg-white/[0.07]",
+        "before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
+        "before:bg-[radial-gradient(600px_circle_at_25%_10%,rgba(250,147,250,0.14),transparent_60%),radial-gradient(650px_circle_at_75%_70%,rgba(152,58,214,0.12),transparent_60%)]",
         className
       )}
     >
       {children}
     </div>
+  );
+}
+
+function Reveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
+  className?: string;
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-10% 0px -12% 0px" }}
+      transition={{ duration: 0.75, ease: [0.2, 0, 0, 1], delay }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
@@ -324,6 +352,7 @@ function AuroraVisual() {
 export default function Hero() {
   const sections = ["home", "about", "experience", "skills", "contact"];
   const active = useActiveSection(sections);
+  const { push } = useToast();
 
   const [filter, setFilter] = React.useState<ExperienceCategory>("all");
   const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
@@ -344,7 +373,9 @@ export default function Hero() {
     q ? items.filter((x) => x.toLowerCase().includes(q)) : items;
 
   const onNav = (id: string) =>
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    document
+      .getElementById(id)
+      ?.scrollIntoView({ behavior: "smooth", block: "start" });
 
   return (
     <div className="relative overflow-hidden">
@@ -356,9 +387,17 @@ export default function Hero() {
       <div className="sticky top-4 z-40 mx-auto max-w-6xl px-6">
         <div className="rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
-            <button className="text-left" onClick={() => onNav("home")} type="button">
-              <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">Resume Portfolio</div>
-              <div className="mt-0.5 font-semibold tracking-tight">{PROFILE.name}</div>
+            <button
+              className="text-left"
+              onClick={() => onNav("home")}
+              type="button"
+            >
+              <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                Resume Portfolio
+              </div>
+              <div className="mt-0.5 font-semibold tracking-tight">
+                {PROFILE.name}
+              </div>
             </button>
 
             <div className="hidden items-center gap-2 sm:flex">
@@ -369,7 +408,8 @@ export default function Hero() {
                   onClick={() => onNav(id)}
                   className={cn(
                     "rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
-                    active === id && "bg-white/5 text-white border border-white/10"
+                    active === id &&
+                      "bg-white/5 text-white border border-white/10"
                   )}
                 >
                   {id.charAt(0).toUpperCase() + id.slice(1)}
@@ -409,14 +449,18 @@ export default function Hero() {
               <GradientIcon>
                 <Zap className="h-4 w-4" />
               </GradientIcon>
-              <span className="text-sm text-white/70">Event-ready. Guest-first. Ops-focused.</span>
+              <span className="text-sm text-white/70">
+                Event-ready. Guest-first. Ops-focused.
+              </span>
             </Pill>
 
             <h1 className="mt-8 text-balance text-[44px] font-semibold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[76px]">
               <span className="block bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
                 {PROFILE.name}
               </span>
-              <span className="mt-2 block text-white/90 text-[18px] sm:text-[20px] font-medium">{PROFILE.title}</span>
+              <span className="mt-2 block text-white/90 text-[18px] sm:text-[20px] font-medium">
+                {PROFILE.title}
+              </span>
             </h1>
 
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-white/75 sm:text-lg">
@@ -438,7 +482,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => onNav("experience")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:-translate-y-[1px]"
               >
                 View Experience <Sparkles className="h-4 w-4" />
               </button>
@@ -446,7 +490,7 @@ export default function Hero() {
               <button
                 type="button"
                 onClick={() => onNav("contact")}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-white/90 transition hover:bg-white/10 hover:-translate-y-[1px]"
               >
                 Contact <Mail className="h-4 w-4" />
               </button>
@@ -456,144 +500,189 @@ export default function Hero() {
               {STATS.map((s) => (
                 <div
                   key={s.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur"
+                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur transition hover:bg-white/[0.06]"
                 >
-                  <div className="text-xl font-semibold text-white">{s.value}</div>
-                  <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/55">{s.label}</div>
+                  <div className="text-xl font-semibold text-white">
+                    {s.value}
+                  </div>
+                  <div className="mt-1 text-[11px] uppercase tracking-[0.22em] text-white/55">
+                    {s.label}
+                  </div>
                 </div>
               ))}
             </div>
           </motion.div>
 
           <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <GlassCard className="lg:col-span-2">
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">Spotlight</div>
-                    <div className="mt-2 text-2xl font-semibold tracking-tight">Tap through key roles</div>
-                    <p className="mt-3 max-w-xl text-white/70 leading-relaxed">
-                      Quick skim of the strongest role examples — then jump into the full experience section.
-                    </p>
-                  </div>
-                  <GradientIcon>
-                    <Sparkles className="h-4 w-4" />
-                  </GradientIcon>
-                </div>
-
-                <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 p-6">
-                  <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
-                    <span className="text-base">{spotlight.emoji}</span>
-                    <span className="font-semibold">{spotlight.role}</span>
-                  </div>
-
-                  <div className="mt-4 text-2xl font-semibold tracking-tight">{spotlight.company}</div>
-                  <div className="mt-2 text-sm text-white/60">
-                    {spotlight.location} • {spotlight.dates}
+            <Reveal>
+              <GlassCard className="lg:col-span-2">
+                <div className="p-6 sm:p-8">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                        Spotlight
+                      </div>
+                      <div className="mt-2 text-2xl font-semibold tracking-tight">
+                        Tap through key roles
+                      </div>
+                      <p className="mt-3 max-w-xl text-white/70 leading-relaxed">
+                        Quick skim of the strongest role examples — then jump
+                        into the full experience section.
+                      </p>
+                    </div>
+                    <GradientIcon>
+                      <Sparkles className="h-4 w-4" />
+                    </GradientIcon>
                   </div>
 
-                  <p className="mt-4 text-white/75 leading-relaxed">{spotlight.highlights[0]}</p>
-
-                  <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => setSpotlightIndex((v) => (v - 1 + EXPERIENCE.length) % EXPERIENCE.length)}
-                        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
-                        aria-label="Previous spotlight"
-                      >
-                        ←
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => setSpotlightIndex((v) => (v + 1) % EXPERIENCE.length)}
-                        className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
-                        aria-label="Next spotlight"
-                      >
-                        →
-                      </button>
+                  <div className="mt-6 rounded-3xl border border-white/10 bg-black/20 p-6">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
+                      <span className="text-base">{spotlight.emoji}</span>
+                      <span className="font-semibold">{spotlight.role}</span>
                     </div>
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setFilter("all");
-                        onNav("experience");
-                        window.setTimeout(() => {
-                          document.getElementById(`exp-${spotlight.id}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-                        }, 250);
-                      }}
-                      className="rounded-2xl bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:-translate-y-[1px]"
-                    >
-                      Jump to role
-                    </button>
+                    <div className="mt-4 text-2xl font-semibold tracking-tight">
+                      {spotlight.company}
+                    </div>
+                    <div className="mt-2 text-sm text-white/60">
+                      {spotlight.location} • {spotlight.dates}
+                    </div>
+
+                    <p className="mt-4 text-white/75 leading-relaxed">
+                      {spotlight.highlights[0]}
+                    </p>
+
+                    <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setSpotlightIndex(
+                              (v) =>
+                                (v - 1 + EXPERIENCE.length) % EXPERIENCE.length
+                            )
+                          }
+                          className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                          aria-label="Previous spotlight"
+                        >
+                          ←
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setSpotlightIndex((v) => (v + 1) % EXPERIENCE.length)
+                          }
+                          className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                          aria-label="Next spotlight"
+                        >
+                          →
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setFilter("all");
+                          onNav("experience");
+                          window.setTimeout(() => {
+                            document
+                              .getElementById(`exp-${spotlight.id}`)
+                              ?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                              });
+                          }, 250);
+                        }}
+                        className="rounded-2xl bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:-translate-y-[1px]"
+                      >
+                        Jump to role
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
 
             <div className="grid gap-6">
-              <GlassCard>
-                <div className="p-6 sm:p-8">
-                  <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">Contact</div>
+              <Reveal delay={0.06}>
+                <GlassCard>
+                  <div className="p-6 sm:p-8">
+                    <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                      Contact
+                    </div>
 
-                  <div className="mt-5 grid gap-3">
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        const ok = await copyToClipboard(PROFILE.email);
-                        if (ok) alert("Email copied");
-                      }}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Mail className="h-4 w-4 text-white/70" />
-                        <span className="text-sm text-white/85">{PROFILE.email}</span>
+                    <div className="mt-5 grid gap-3">
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const ok = await copyToClipboard(PROFILE.email);
+                          push(ok ? "Email copied" : "Copy failed");
+                        }}
+                        className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Mail className="h-4 w-4 text-white/70" />
+                          <span className="text-sm text-white/85">
+                            {PROFILE.email}
+                          </span>
+                        </div>
+                        <span className="text-xs text-white/60">copy</span>
+                      </button>
+
+                      <a
+                        href={`tel:${PROFILE.phoneHref}`}
+                        className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Phone className="h-4 w-4 text-white/70" />
+                          <span className="text-sm text-white/85">
+                            {PROFILE.phone}
+                          </span>
+                        </div>
+                        <span className="text-xs text-white/60">call</span>
+                      </a>
+
+                      <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                        <MapPin className="mt-0.5 h-4 w-4 text-white/70" />
+                        <span className="text-sm text-white/75 leading-relaxed">
+                          {PROFILE.location}
+                        </span>
                       </div>
-                      <span className="text-xs text-white/60">copy</span>
-                    </button>
-
-                    <a
-                      href={`tel:${PROFILE.phoneHref}`}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-left transition hover:bg-white/10"
-                    >
-                      <div className="flex items-center gap-3">
-                        <Phone className="h-4 w-4 text-white/70" />
-                        <span className="text-sm text-white/85">{PROFILE.phone}</span>
-                      </div>
-                      <span className="text-xs text-white/60">call</span>
-                    </a>
-
-                    <div className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                      <MapPin className="mt-0.5 h-4 w-4 text-white/70" />
-                      <span className="text-sm text-white/75 leading-relaxed">{PROFILE.location}</span>
                     </div>
                   </div>
-                </div>
-              </GlassCard>
+                </GlassCard>
+              </Reveal>
 
-              <GlassCard>
-                <div className="p-6 sm:p-8">
-                  <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">Education</div>
-                  <div className="mt-4 text-lg font-semibold">Clemson University</div>
-                  <div className="mt-2 text-sm text-white/70 leading-relaxed">
-                    Bachelor of Science in Parks, Recreation, and Tourism Management
-                    <br />
-                    Concentration: Tourism and Event Management
+              <Reveal delay={0.12}>
+                <GlassCard>
+                  <div className="p-6 sm:p-8">
+                    <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                      Education
+                    </div>
+                    <div className="mt-4 text-lg font-semibold">
+                      Clemson University
+                    </div>
+                    <div className="mt-2 text-sm text-white/70 leading-relaxed">
+                      Bachelor of Science in Parks, Recreation, and Tourism
+                      Management
+                      <br />
+                      Concentration: Tourism and Event Management
+                    </div>
+                    <div className="mt-3 text-sm text-white/60">May 2026</div>
+                    <div className="mt-4 text-sm text-white/60 leading-relaxed">
+                      Additional background in computer science coursework, with
+                      experience using modern software and technology tools.
+                    </div>
                   </div>
-                  <div className="mt-3 text-sm text-white/60">May 2026</div>
-                  <div className="mt-4 text-sm text-white/60 leading-relaxed">
-                    Additional background in computer science coursework, with experience using modern software and technology tools.
-                  </div>
-                </div>
-              </GlassCard>
+                </GlassCard>
+              </Reveal>
             </div>
           </div>
         </section>
 
         <section className="relative mt-16">
           <div
-            className="relative"
+            className="relative bg-[#010101] overflow-hidden"
             style={{ width: "100vw", marginLeft: "calc(50% - 50vw)" }}
           >
             <div className="relative overflow-hidden">
@@ -608,7 +697,9 @@ export default function Hero() {
                 <div className="mx-auto max-w-6xl px-6 py-7">
                   <div className="flex flex-col gap-5 md:flex-row md:items-center">
                     <div className="flex items-center gap-4 md:min-w-[240px]">
-                      <p className="text-sm font-medium text-white/70">Highlights</p>
+                      <p className="text-sm font-medium text-white/70">
+                        Highlights
+                      </p>
                       <div className="hidden h-8 w-px bg-white/10 md:block" />
                     </div>
 
@@ -628,37 +719,49 @@ export default function Hero() {
           />
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <GlassCard>
-              <div className="p-6 sm:p-8">
-                <div className="text-lg font-semibold">Professional Summary</div>
-                <p className="mt-4 text-white/75 leading-relaxed">
-                  Gunnar Patterson has a background in event operations, hospitality, guest service, and logistics. His experience includes live
-                  events, front desk work, and customer-facing roles that have built strong communication, organization, and problem-solving skills.
-                </p>
-                <p className="mt-4 text-white/60 leading-relaxed">
-                  He works well in fast-paced environments where staying organized, helping people, and handling issues quickly all matter.
-                </p>
-              </div>
-            </GlassCard>
+            <Reveal>
+              <GlassCard>
+                <div className="p-6 sm:p-8">
+                  <div className="text-lg font-semibold">Professional Summary</div>
+                  <p className="mt-4 text-white/75 leading-relaxed">
+                    Gunnar Patterson has a background in event operations,
+                    hospitality, guest service, and logistics. His experience
+                    includes live events, front desk work, and customer-facing
+                    roles that have built strong communication, organization, and
+                    problem-solving skills.
+                  </p>
+                  <p className="mt-4 text-white/60 leading-relaxed">
+                    He works well in fast-paced environments where staying
+                    organized, helping people, and handling issues quickly all
+                    matter.
+                  </p>
+                </div>
+              </GlassCard>
+            </Reveal>
 
-            <GlassCard>
-              <div className="p-6 sm:p-8">
-                <div className="text-lg font-semibold">What stands out</div>
-                <ul className="mt-5 grid gap-3 text-white/75">
-                  {[
-                    "Hands-on experience with live events and on-site operations.",
-                    "Comfortable working in busy environments where teamwork matters.",
-                    "Experience supporting large public events, including festival and motorsports work.",
-                    "Strong fit for event, hospitality, tourism, and operations roles.",
-                  ].map((t) => (
-                    <li key={t} className="flex gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                      <span className="mt-1 text-[#FA93FA]">›</span>
-                      <span className="leading-relaxed">{t}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </GlassCard>
+            <Reveal delay={0.06}>
+              <GlassCard>
+                <div className="p-6 sm:p-8">
+                  <div className="text-lg font-semibold">What stands out</div>
+                  <ul className="mt-5 grid gap-3 text-white/75">
+                    {[
+                      "Hands-on experience with live events and on-site operations.",
+                      "Comfortable working in busy environments where teamwork matters.",
+                      "Experience supporting large public events, including festival and motorsports work.",
+                      "Strong fit for event, hospitality, tourism, and operations roles.",
+                    ].map((t) => (
+                      <li
+                        key={t}
+                        className="flex gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
+                      >
+                        <span className="mt-1 text-[#FA93FA]">›</span>
+                        <span className="leading-relaxed">{t}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </GlassCard>
+            </Reveal>
           </div>
         </section>
 
@@ -694,49 +797,56 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 grid gap-6">
-            {visibleExperience.map((e) => {
+            {visibleExperience.map((e, idx) => {
               const isExpanded = Boolean(expanded[e.id]);
               const shown = isExpanded ? e.highlights : e.highlights.slice(0, 3);
+              const delay = Math.min(idx * 0.04, 0.16);
 
               return (
-                <GlassCard key={e.id} className="overflow-hidden">
-                  <div id={`exp-${e.id}`} className="p-6 sm:p-8">
-                    <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
-                      <div>
-                        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
-                          <span className="text-base">{e.emoji}</span>
-                          <span className="font-semibold">{e.role}</span>
+                <Reveal key={e.id} delay={delay}>
+                  <GlassCard className="overflow-hidden">
+                    <div id={`exp-${e.id}`} className="p-6 sm:p-8">
+                      <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
+                        <div>
+                          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80">
+                            <span className="text-base">{e.emoji}</span>
+                            <span className="font-semibold">{e.role}</span>
+                          </div>
+                          <div className="mt-4 text-2xl font-semibold tracking-tight">
+                            {e.company}
+                          </div>
+                          <div className="mt-2 text-sm text-white/60">{e.location}</div>
+                          <div className="mt-3 text-sm text-white/70">{e.dates}</div>
                         </div>
-                        <div className="mt-4 text-2xl font-semibold tracking-tight">{e.company}</div>
-                        <div className="mt-2 text-sm text-white/60">{e.location}</div>
-                        <div className="mt-3 text-sm text-white/70">{e.dates}</div>
-                      </div>
 
-                      <div className="lg:max-w-xl">
-                        <ul className="grid gap-3">
-                          {shown.map((h) => (
-                            <li
-                              key={h}
-                              className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white/75 leading-relaxed"
+                        <div className="lg:max-w-xl">
+                          <ul className="grid gap-3">
+                            {shown.map((h) => (
+                              <li
+                                key={h}
+                                className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-white/75 leading-relaxed transition hover:bg-white/5"
+                              >
+                                {h}
+                              </li>
+                            ))}
+                          </ul>
+
+                          {e.highlights.length > 3 ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setExpanded((s) => ({ ...s, [e.id]: !isExpanded }))
+                              }
+                              className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:-translate-y-[1px]"
                             >
-                              {h}
-                            </li>
-                          ))}
-                        </ul>
-
-                        {e.highlights.length > 3 ? (
-                          <button
-                            type="button"
-                            onClick={() => setExpanded((s) => ({ ...s, [e.id]: !isExpanded }))}
-                            className="mt-4 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
-                          >
-                            {isExpanded ? "Show fewer" : "Show all highlights"}
-                          </button>
-                        ) : null}
+                              {isExpanded ? "Show fewer" : "Show all highlights"}
+                            </button>
+                          ) : null}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </GlassCard>
+                  </GlassCard>
+                </Reveal>
               );
             })}
           </div>
@@ -750,65 +860,74 @@ export default function Hero() {
           />
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <GlassCard className="lg:col-span-1">
-              <div className="p-6 sm:p-8">
-                <div className="text-lg font-semibold">At a glance</div>
-                <div className="mt-4 flex gap-2">
-                  <input
-                    value={skillQuery}
-                    onChange={(e) => setSkillQuery(e.target.value)}
-                    placeholder="Search skills (try: logistics, guest, AI)"
-                    className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/90 outline-none placeholder:text-white/40"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setSkillQuery("")}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 transition hover:bg-white/10"
-                  >
-                    Clear
-                  </button>
-                </div>
-
-                <p className="mt-4 text-sm text-white/60">Tip: click any chip to auto-search it.</p>
-
-                <div className="mt-5 flex flex-wrap gap-2">
-                  {SKILL_TAGS.filter((t) => (q ? t.toLowerCase().includes(q) : true)).map((t) => (
+            <Reveal>
+              <GlassCard className="lg:col-span-1">
+                <div className="p-6 sm:p-8">
+                  <div className="text-lg font-semibold">At a glance</div>
+                  <div className="mt-4 flex gap-2">
+                    <input
+                      value={skillQuery}
+                      onChange={(e) => setSkillQuery(e.target.value)}
+                      placeholder="Search skills (try: logistics, guest, AI)"
+                      className="w-full rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm text-white/90 outline-none placeholder:text-white/40"
+                    />
                     <button
-                      key={t}
                       type="button"
-                      onClick={() => setSkillQuery(t)}
-                      className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10"
+                      onClick={() => setSkillQuery("")}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white/80 transition hover:bg-white/10 hover:-translate-y-[1px]"
                     >
-                      {t}
+                      Clear
                     </button>
-                  ))}
+                  </div>
+
+                  <p className="mt-4 text-sm text-white/60">
+                    Tip: click any chip to auto-search it.
+                  </p>
+
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {SKILL_TAGS.filter((t) =>
+                      q ? t.toLowerCase().includes(q) : true
+                    ).map((t) => (
+                      <button
+                        key={t}
+                        type="button"
+                        onClick={() => setSkillQuery(t)}
+                        className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:-translate-y-[1px]"
+                      >
+                        {t}
+                      </button>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
 
             <div className="grid gap-6 lg:col-span-2 lg:grid-cols-3">
-              {SKILL_GROUPS.map((g) => {
+              {SKILL_GROUPS.map((g, idx) => {
                 const matches = groupMatches(g.items);
                 if (q && matches.length === 0) return null;
+                const delay = Math.min(idx * 0.05, 0.15);
 
                 return (
-                  <GlassCard key={g.title}>
-                    <div className="p-6 sm:p-8">
-                      <div className="text-lg font-semibold">{g.title}</div>
-                      <div className="mt-5 grid gap-2">
-                        {matches.map((t) => (
-                          <button
-                            key={t}
-                            type="button"
-                            onClick={() => setSkillQuery(t)}
-                            className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-left text-sm text-white/75 transition hover:bg-white/5"
-                          >
-                            {t}
-                          </button>
-                        ))}
+                  <Reveal key={g.title} delay={delay}>
+                    <GlassCard>
+                      <div className="p-6 sm:p-8">
+                        <div className="text-lg font-semibold">{g.title}</div>
+                        <div className="mt-5 grid gap-2">
+                          {matches.map((t) => (
+                            <button
+                              key={t}
+                              type="button"
+                              onClick={() => setSkillQuery(t)}
+                              className="rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-left text-sm text-white/75 transition hover:bg-white/5 hover:-translate-y-[1px]"
+                            >
+                              {t}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  </GlassCard>
+                    </GlassCard>
+                  </Reveal>
                 );
               })}
             </div>
@@ -823,131 +942,154 @@ export default function Hero() {
           />
 
           <div className="mt-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <GlassCard>
-              <div className="p-6 sm:p-8">
-                <div className="text-2xl font-semibold tracking-tight">
-                  Open to opportunities in events, hospitality, tourism, and operations
-                </div>
-                <p className="mt-4 text-white/75 leading-relaxed">
-                  Gunnar has experience in live events, hospitality, guest service, and logistics. Email is the best way to reach him, and phone works
-                  well for quicker conversations.
-                </p>
+            <Reveal>
+              <GlassCard>
+                <div className="p-6 sm:p-8">
+                  <div className="text-2xl font-semibold tracking-tight">
+                    Open to opportunities in events, hospitality, tourism, and operations
+                  </div>
+                  <p className="mt-4 text-white/75 leading-relaxed">
+                    Gunnar has experience in live events, hospitality, guest service,
+                    and logistics. Email is the best way to reach him, and phone works
+                    well for quicker conversations.
+                  </p>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <a
-                    href={`mailto:${PROFILE.email}?subject=Professional%20Opportunity%20for%20Gunnar%20Patterson`}
-                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
-                  >
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                    <a
+                      href={`mailto:${PROFILE.email}?subject=Professional%20Opportunity%20for%20Gunnar%20Patterson`}
+                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <GradientIcon>
+                        <Mail className="h-4 w-4" />
+                      </GradientIcon>
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Email
+                        </div>
+                        <div className="text-sm text-white/85">{PROFILE.email}</div>
+                      </div>
+                    </a>
+
+                    <a
+                      href={`tel:${PROFILE.phoneHref}`}
+                      className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <GradientIcon>
+                        <Phone className="h-4 w-4" />
+                      </GradientIcon>
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Phone
+                        </div>
+                        <div className="text-sm text-white/85">{PROFILE.phone}</div>
+                      </div>
+                    </a>
+                  </div>
+
+                  <div className="mt-4 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                     <GradientIcon>
-                      <Mail className="h-4 w-4" />
+                      <MapPin className="h-4 w-4" />
                     </GradientIcon>
                     <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Email</div>
-                      <div className="text-sm text-white/85">{PROFILE.email}</div>
+                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                        Location
+                      </div>
+                      <div className="text-sm text-white/75 leading-relaxed">
+                        {PROFILE.location}
+                      </div>
                     </div>
-                  </a>
-
-                  <a
-                    href={`tel:${PROFILE.phoneHref}`}
-                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 transition hover:bg-white/10"
-                  >
-                    <GradientIcon>
-                      <Phone className="h-4 w-4" />
-                    </GradientIcon>
-                    <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Phone</div>
-                      <div className="text-sm text-white/85">{PROFILE.phone}</div>
-                    </div>
-                  </a>
-                </div>
-
-                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
-                  <GradientIcon>
-                    <MapPin className="h-4 w-4" />
-                  </GradientIcon>
-                  <div>
-                    <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Location</div>
-                    <div className="text-sm text-white/75 leading-relaxed">{PROFILE.location}</div>
                   </div>
                 </div>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
 
-            <GlassCard>
-              <div className="p-6 sm:p-8">
-                <Pill>
-                  <GradientIcon>
-                    <Sparkles className="h-4 w-4" />
-                  </GradientIcon>
-                  <span className="text-sm text-white/70">Quick Links</span>
-                </Pill>
+            <Reveal delay={0.06}>
+              <GlassCard>
+                <div className="p-6 sm:p-8">
+                  <Pill>
+                    <GradientIcon>
+                      <Sparkles className="h-4 w-4" />
+                    </GradientIcon>
+                    <span className="text-sm text-white/70">Quick Links</span>
+                  </Pill>
 
-                <div className="mt-6 grid gap-3">
-                  <a
-                    href={PROFILE.resumeHref}
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-white px-5 py-4 text-black transition hover:-translate-y-[1px]"
-                  >
-                    <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-black/60">Resume</div>
-                      <div className="mt-1 font-semibold">Download PDF</div>
-                    </div>
-                    <Download className="h-5 w-5" />
-                  </a>
+                  <div className="mt-6 grid gap-3">
+                    <a
+                      href={PROFILE.resumeHref}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white px-5 py-4 text-black transition hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-black/60">
+                          Resume
+                        </div>
+                        <div className="mt-1 font-semibold">Download PDF</div>
+                      </div>
+                      <Download className="h-5 w-5" />
+                    </a>
 
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      const ok = await copyToClipboard(PROFILE.email);
-                      if (ok) alert("Email copied");
-                    }}
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10"
-                  >
-                    <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Copy Email</div>
-                      <div className="mt-1 font-semibold">{PROFILE.email}</div>
-                    </div>
-                    <span className="text-white/70">⧉</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const ok = await copyToClipboard(PROFILE.email);
+                        push(ok ? "Email copied" : "Copy failed");
+                      }}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Copy Email
+                        </div>
+                        <div className="mt-1 font-semibold">{PROFILE.email}</div>
+                      </div>
+                      <span className="text-white/70">⧉</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={async () => {
-                      const ok = await copyToClipboard(PROFILE.phone);
-                      if (ok) alert("Phone copied");
-                    }}
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10"
-                  >
-                    <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Copy Phone</div>
-                      <div className="mt-1 font-semibold">{PROFILE.phone}</div>
-                    </div>
-                    <span className="text-white/70">⧉</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        const ok = await copyToClipboard(PROFILE.phone);
+                        push(ok ? "Phone copied" : "Copy failed");
+                      }}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Copy Phone
+                        </div>
+                        <div className="mt-1 font-semibold">{PROFILE.phone}</div>
+                      </div>
+                      <span className="text-white/70">⧉</span>
+                    </button>
 
-                  <button
-                    type="button"
-                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                    className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10"
-                  >
-                    <div>
-                      <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">Back to Top</div>
-                      <div className="mt-1 font-semibold">Return to hero</div>
-                    </div>
-                    <span className="text-white/70">↑</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Back to Top
+                        </div>
+                        <div className="mt-1 font-semibold">Return to hero</div>
+                      </div>
+                      <span className="text-white/70">↑</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            </GlassCard>
+              </GlassCard>
+            </Reveal>
           </div>
 
-          <div className="mt-10 text-center text-sm text-white/50">Built as a GitHub Pages-ready portfolio.</div>
+          <div className="mt-10 text-center text-sm text-white/50">
+            Built as a GitHub Pages-ready portfolio.
+          </div>
         </section>
       </main>
 
       <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
         <a
           href={PROFILE.resumeHref}
-          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40"
+          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40 hover:-translate-y-[1px]"
           aria-label="Download resume"
           title="Download resume"
         >
@@ -955,7 +1097,7 @@ export default function Hero() {
         </a>
         <a
           href={`mailto:${PROFILE.email}`}
-          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40"
+          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40 hover:-translate-y-[1px]"
           aria-label="Email"
           title="Email"
         >
@@ -964,7 +1106,7 @@ export default function Hero() {
         <button
           type="button"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40"
+          className="inline-flex items-center justify-center rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-3 text-white/85 shadow-[0_18px_55px_rgba(0,0,0,0.45)] transition hover:bg-black/40 hover:-translate-y-[1px]"
           aria-label="Back to top"
           title="Back to top"
         >
