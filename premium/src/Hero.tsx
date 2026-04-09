@@ -1,20 +1,6 @@
 import * as React from "react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "motion/react";
-import {
-  ArrowRight,
-  Download,
-  Mail,
-  MapPin,
-  Phone,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { ArrowRight, Download, Mail, MapPin, Phone, Sparkles, Zap } from "lucide-react";
 import { cn } from "./lib/cn";
 import { InfiniteSlider } from "./components/ui/infinite-slider";
 import { useToast } from "./components/ui/toast";
