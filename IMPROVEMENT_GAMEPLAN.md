@@ -1,82 +1,81 @@
-# Portfolio Improvement Game Plan
+# Portfolio Improvement Game Plan (v2)
 
-## 1) Brainstorm: front-end and back-end upgrades
+## Brainstorm backlog (anything on the table)
 
-### UX / Visual
-- Add polished favicon + web manifest so the tab and saved-site icon feel production-ready.
-- Add a quick contact composer so recruiters can launch a prefilled email quickly.
-- Add light/dark theme toggle with localStorage persistence.
-- Add micro-interactions for section transitions and button states.
+### High-impact front-end ideas
+- **Command palette** (`⌘/Ctrl + K`) for quick navigation + actions.
+- **Theme switcher** with persisted preference and animated transitions.
+- **Case-study pages** for major projects/events (before/after, metrics, media).
+- **Testimonials section** with credibility signals (logos, quotes, references).
+- **Accessibility score pass** (contrast checks, landmark improvements, ARIA review).
 
-### Performance
-- Convert heavy media assets to modern formats and load them lazily.
-- Add image dimension hints to reduce layout shift.
-- Set long-cache headers for static assets through hosting config.
+### Back-end / platform ideas
+- **Serverless contact API** (Resend/SendGrid) replacing `mailto` dependency.
+- **Spam filtering** (honeypot + simple rate limit + challenge when suspicious).
+- **Headless content source** (JSON/Markdown) so experience updates are content-only.
+- **Analytics endpoint** for CTA and section interaction insights.
+- **Deploy previews + CI quality gates** (Lighthouse, link checks, HTML validation).
 
-### Back-end / Data
-- Add serverless contact endpoint (email relay + spam protection).
-- Add structured analytics pipeline for page-section engagement.
-- Add CMS-style content source (JSON/Markdown) so resume entries are easier to update.
-
-### SEO / discoverability
-- Add sitemap.xml and robots.txt.
-- Expand schema.org with `sameAs` and role history.
-- Add canonical/alternate metadata for future localized pages.
-
-### Quality / Reliability
-- Add lint + formatting + build checks in CI.
-- Add Lighthouse CI budget checks.
-- Add uptime monitor ping and broken-link detection.
+### SEO / growth ideas
+- `sitemap.xml`, `robots.txt`, canonical URL checks, richer schema.
+- Structured project metadata for richer search snippets.
+- Auto-generated Open Graph images by page/section.
 
 ---
 
-## 2) Pseudocode game-plan for next iterations
+## Pseudocode game-plan
 
-### A) Serverless contact form with anti-spam
+### 1) Contact API with anti-spam
 ```pseudo
-on POST /api/contact:
-  parse payload {name, email, subject, message, honeypot, timestamp}
-  if honeypot is not empty -> reject as spam
-  if current_time - timestamp < 4 seconds -> reject as bot
-  validate all required fields and email format
-  sanitize message fields
-  send email through provider (Resend/SendGrid)
-  store lead in lightweight DB table
-  return success JSON
+route POST /api/contact
+  payload = parse_json(request)
+  if payload.honeypot is not empty: reject(400, "spam")
+  if now - payload.submitted_at < 4s: reject(429, "too fast")
+  validate(payload.email, payload.subject, payload.message)
+  sanitized = sanitize(payload)
+  email_provider.send(to=owner, reply_to=sanitized.email, body=sanitized.message)
+  db.insert("leads", sanitized + metadata)
+  return { ok: true }
 ```
 
-### B) Content-driven resume sections
+### 2) Content-driven resume sections
 ```pseudo
-load content from /content/resume.json
-for each section in content:
-  render section heading
-  render cards ordered by `priority` or `startDate`
-if content schema fails validation:
-  fallback to safe defaults
-  log a warning for maintainer
+content = fetch('/content/experience.json')
+if schema_invalid(content):
+  log_error('Invalid content schema')
+  content = fallback_content
+for section in content.sections:
+  render_section(section.title)
+  for role in sort_by(section.roles, role.start_date desc):
+    render_role_card(role)
 ```
 
-### C) Analytics events for portfolio funnel
+### 3) Analytics event model
 ```pseudo
-on page_view:
-  track {path, referrer, device_type}
-
-on CTA click (email, phone, resume download):
-  track {cta_name, page_section, timestamp}
-
-nightly job:
-  aggregate events into dashboard metrics
-  compute conversion rates by section
+on page_view(section): track('page_view', { section, device, referrer })
+on cta_click(name): track('cta_click', { name, section, timestamp })
+on resume_download(): track('resume_download', { timestamp })
+nightly:
+  aggregate conversion funnels
+  send report email if conversion drops > threshold
 ```
 
-### D) Asset/version strategy
+### 4) Quality gates in CI
 ```pseudo
-during build:
-  fingerprint css/js/media filenames
-  generate manifest map
-  inject hashed paths into HTML templates
-
-on deploy:
-  set immutable caching for hashed assets
-  set short cache for HTML entrypoint
+on pull_request:
+  run lint + format check
+  run html validation
+  run lighthouse ci against preview URL
+  fail PR if accessibility < 90 or performance < 85
 ```
+
+---
+
+## Implemented in this repo iteration
+- Modern favicon + manifest support.
+- Quick email launcher form (prefilled draft).
+- Shareable link copy action.
+- Remember last visited section via localStorage.
+- Keyboard shortcuts (`1-5` to jump pages, `/` to focus skills search).
+- Auto-rotating spotlight card with pause on hover/tab hidden.
+- `robots.txt` + `sitemap.xml` for baseline SEO indexing.
