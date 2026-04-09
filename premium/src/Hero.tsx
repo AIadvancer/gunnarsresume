@@ -178,7 +178,7 @@ const HIGHLIGHT_TICKER = [
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-[rgba(28,27,36,0.18)] px-4 py-2 backdrop-blur-md">
+    <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-[linear-gradient(140deg,rgba(28,27,36,0.55),rgba(12,12,17,0.35))] px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
       {children}
     </div>
   );
@@ -204,12 +204,13 @@ function GlassCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] backdrop-blur-xl",
-        "shadow-[0_30px_90px_rgba(0,0,0,0.45)]",
-        "transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-1",
-        "transition-colors hover:border-white/20 hover:bg-white/[0.07]",
+        "relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(170deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] backdrop-blur-2xl",
+        "shadow-[0_30px_95px_rgba(0,0,0,0.52)]",
+        "transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-1.5 hover:shadow-[0_38px_110px_rgba(0,0,0,0.56)]",
+        "hover:border-white/25",
         "before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
-        "before:bg-[radial-gradient(600px_circle_at_25%_10%,rgba(250,147,250,0.14),transparent_60%),radial-gradient(650px_circle_at_75%_70%,rgba(152,58,214,0.12),transparent_60%)]",
+        "before:bg-[radial-gradient(640px_circle_at_20%_4%,rgba(250,147,250,0.18),transparent_58%),radial-gradient(640px_circle_at_85%_78%,rgba(59,130,246,0.16),transparent_58%)]",
+        "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:border after:border-white/[0.06]",
         className
       )}
     >
@@ -254,7 +255,8 @@ function SectionHeading({
       <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
         {kicker}
       </div>
-      <h2 className="mt-3 text-balance text-3xl sm:text-4xl font-semibold tracking-tight">
+      <div className="premium-divider" aria-hidden="true" />
+      <h2 className="mt-4 text-balance text-3xl sm:text-4xl font-semibold tracking-tight">
         <span className="bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
           {title}
         </span>
@@ -385,7 +387,7 @@ export default function Hero() {
       />
 
       <div className="sticky top-4 z-40 mx-auto max-w-6xl px-6">
-        <div className="rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
+        <div className="rounded-3xl border border-white/15 bg-[linear-gradient(160deg,rgba(10,10,14,0.72),rgba(17,17,25,0.45))] backdrop-blur-2xl shadow-[0_24px_70px_rgba(0,0,0,0.52)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <button
               className="text-left"
@@ -407,7 +409,7 @@ export default function Hero() {
                   type="button"
                   onClick={() => onNav(id)}
                   className={cn(
-                    "rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
+                    "nav-chip rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
                     active === id &&
                       "bg-white/5 text-white border border-white/10"
                   )}
@@ -437,7 +439,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <main className="relative mx-auto max-w-6xl px-6 pb-24">
+      <main className="relative mx-auto max-w-6xl px-6 pb-28">
         <section id="home" className="pt-20 sm:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
@@ -454,7 +456,7 @@ export default function Hero() {
               </span>
             </Pill>
 
-            <h1 className="mt-8 text-balance text-[44px] font-semibold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[76px]">
+            <h1 className="mt-8 text-balance text-[44px] font-semibold leading-[1.01] tracking-tight sm:text-[66px] lg:text-[80px] drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
               <span className="block bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
                 {PROFILE.name}
               </span>
@@ -466,6 +468,12 @@ export default function Hero() {
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-white/75 sm:text-lg">
               {PROFILE.tagline}
             </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.18em] text-white/55">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Open to relocation</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Available immediately</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Event + Ops Focus</span>
+            </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <a
@@ -500,7 +508,7 @@ export default function Hero() {
               {STATS.map((s) => (
                 <div
                   key={s.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur transition hover:bg-white/[0.06]"
+                  className="rounded-2xl border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-5 py-4 backdrop-blur-xl transition hover:-translate-y-[2px] hover:bg-white/[0.10]"
                 >
                   <div className="text-xl font-semibold text-white">
                     {s.value}
@@ -711,7 +719,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="about" className="mt-20">
+        <section id="about" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Profile"
             title="About Gunnar"
@@ -765,7 +774,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="experience" className="mt-20">
+        <section id="experience" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Career"
             title="Experience that translates"
@@ -852,7 +862,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="skills" className="mt-20">
+        <section id="skills" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Capabilities"
             title="Skills built for modern work"
@@ -934,7 +945,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="contact" className="mt-20">
+        <section id="contact" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Connect"
             title="Let’s connect"
@@ -1063,6 +1075,23 @@ export default function Hero() {
 
                     <button
                       type="button"
+                      onClick={async () => {
+                        const ok = await copyToClipboard(window.location.href);
+                        push(ok ? "Page link copied" : "Copy failed");
+                      }}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Share Portfolio
+                        </div>
+                        <div className="mt-1 font-semibold">Copy this page link</div>
+                      </div>
+                      <span className="text-white/70">↗</span>
+                    </button>
+
+                    <button
+                      type="button"
                       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                       className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
                     >
@@ -1081,7 +1110,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 text-center text-sm text-white/50">
-            Built as a GitHub Pages-ready portfolio.
+            Crafted as a premium GitHub Pages portfolio experience.
           </div>
         </section>
       </main>
