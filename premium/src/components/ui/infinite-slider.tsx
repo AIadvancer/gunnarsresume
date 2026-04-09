@@ -1,6 +1,13 @@
 import * as React from "react";
 import useMeasure from "react-use-measure";
-import { motion, useAnimationFrame, useMotionValue } from "motion/react";
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useVelocity,
+} from "motion/react";
 import { cn } from "../../lib/cn";
 
 type SliderItem = {
@@ -14,6 +21,7 @@ type SliderItem = {
 type InfiniteSliderProps = {
   items: SliderItem[];
   speed?: number; // px/sec
+  speedBoostOnScroll?: boolean;
   className?: string;
   itemClassName?: string;
 };
@@ -21,19 +29,28 @@ type InfiniteSliderProps = {
 export function InfiniteSlider({
   items,
   speed = 70,
+  speedBoostOnScroll = false,
   className,
   itemClassName,
 }: InfiniteSliderProps) {
   const x = useMotionValue(0);
   const [setRef, bounds] = useMeasure();
   const [wrapRef, wrapBounds] = useMeasure();
+  const { scrollY } = useScroll();
+  const velocity = useVelocity(scrollY);
+  const smoothVelocity = useSpring(velocity, { stiffness: 140, damping: 24 });
 
   useAnimationFrame((_, delta) => {
     const contentWidth = bounds.width || 0;
     if (!contentWidth) return;
 
+    const velocityBoost = speedBoostOnScroll
+      ? Math.min(120, Math.abs(smoothVelocity.get()) * 0.08)
+      : 0;
+    const effectiveSpeed = speed + velocityBoost;
+
     const current = x.get();
-    const next = current - (speed * delta) / 1000;
+    const next = current - (effectiveSpeed * delta) / 1000;
 
     if (Math.abs(next) >= contentWidth) x.set(0);
     else x.set(next);

@@ -803,7 +803,12 @@ export default function Hero() {
                       <div className="hidden h-8 w-px bg-white/10 md:block" />
                     </div>
 
-                    <InfiniteSlider items={HIGHLIGHT_TICKER} speed={70} className="w-full" />
+                    <InfiniteSlider
+                      items={HIGHLIGHT_TICKER}
+                      speed={70}
+                      speedBoostOnScroll
+                      className="w-full"
+                    />
                   </div>
                 </div>
               </div>
