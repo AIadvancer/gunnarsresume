@@ -4,9 +4,131 @@
   color-scheme: dark;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body,
 #root {
-  height: 100%;
-  background: #010101;
+  min-height: 100%;
+  background:
+    radial-gradient(1200px circle at 10% -10%, rgba(250, 147, 250, 0.14), transparent 45%),
+    radial-gradient(1000px circle at 100% 0%, rgba(59, 130, 246, 0.14), transparent 42%),
+    radial-gradient(900px circle at 50% 110%, rgba(201, 103, 232, 0.14), transparent 45%),
+    #050507;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.94);
+}
+
+::selection {
+  background: rgba(250, 147, 250, 0.36);
+  color: white;
+}
+
+.premium-noise {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.16;
+  mix-blend-mode: soft-light;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.8) 0.6px, transparent 0.6px);
+  background-size: 3px 3px;
+}
+
+.bg-mesh {
+  position: fixed;
+  inset: -25vh -20vw;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(26px) saturate(115%);
+  background:
+    radial-gradient(40% 35% at 16% 12%, rgba(250, 147, 250, 0.2), transparent 70%),
+    radial-gradient(38% 32% at 80% 20%, rgba(59, 130, 246, 0.18), transparent 72%),
+    radial-gradient(42% 36% at 72% 82%, rgba(201, 103, 232, 0.18), transparent 74%),
+    radial-gradient(30% 26% at 28% 86%, rgba(147, 197, 253, 0.14), transparent 72%);
+  animation: meshFloat 22s ease-in-out infinite alternate;
+}
+
+@keyframes meshFloat {
+  0% { transform: scale(1) translate3d(0, 0, 0); }
+  50% { transform: scale(1.05) translate3d(-1.5%, 1.2%, 0); }
+  100% { transform: scale(1.08) translate3d(1.8%, -1.4%, 0); }
+}
+
+.section-shell {
+  position: relative;
+  margin-top: 6rem;
+  padding: 2rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+  backdrop-filter: blur(6px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 26px 72px rgba(0, 0, 0, 0.32);
+}
+
+.section-shell::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(60% 55% at 15% 5%, rgba(250, 147, 250, 0.1), transparent 60%);
+  opacity: 0.7;
+}
+
+.premium-divider {
+  height: 1px;
+  width: min(760px, 90%);
+  margin: 1rem auto 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+}
+
+.premium-dot-grid {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 36px 36px;
+  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.85), transparent 78%);
+  opacity: 0.18;
+}
+
+.nav-chip {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-chip::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.18) 48%, transparent 100%);
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: opacity 0.25s ease, transform 0.45s ease;
+}
+
+.nav-chip:hover::before {
+  opacity: 1;
+  transform: translateX(100%);
+}
+
+@media (max-width: 640px) {
+  .section-shell {
+    margin-top: 4.5rem;
+    padding: 1.4rem 0.8rem;
+    border-radius: 1.4rem;
+  }
 }
