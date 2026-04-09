@@ -1,5 +1,5 @@
 import * as React from "react";
-import { motion, useScroll, useSpring } from "motion/react";
+import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import {
   ArrowRight,
   Download,
@@ -351,6 +351,75 @@ function AuroraVisual() {
   );
 }
 
+function FlowConstellation() {
+  const reduceMotion = useReducedMotion();
+  const nodes = [
+    { x: "10%", y: "20%", delay: 0, dur: 6.2, size: 8 },
+    { x: "28%", y: "62%", delay: 0.6, dur: 8.1, size: 6 },
+    { x: "48%", y: "30%", delay: 1.2, dur: 7.4, size: 10 },
+    { x: "66%", y: "72%", delay: 1.8, dur: 8.6, size: 6 },
+    { x: "84%", y: "38%", delay: 0.9, dur: 7.8, size: 8 },
+  ];
+
+  return (
+    <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
+      <svg
+        className="absolute inset-0 h-full w-full opacity-55"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="flowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(250,147,250,0)" />
+            <stop offset="45%" stopColor="rgba(250,147,250,0.42)" />
+            <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+          </linearGradient>
+        </defs>
+        <path d="M 4 62 C 18 34, 35 82, 54 48 S 84 34, 96 58" stroke="url(#flowLine)" strokeWidth="0.6" fill="none" />
+        <path d="M 0 40 C 20 54, 36 24, 58 44 S 86 70, 100 52" stroke="url(#flowLine)" strokeWidth="0.45" fill="none" />
+      </svg>
+
+      {nodes.map((n, idx) => (
+        <motion.span
+          key={`${n.x}-${n.y}-${idx}`}
+          className="absolute rounded-full"
+          style={{
+            left: n.x,
+            top: n.y,
+            width: n.size,
+            height: n.size,
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(250,147,250,0.8) 55%, rgba(59,130,246,0.2) 100%)",
+            boxShadow:
+              "0 0 18px rgba(250,147,250,0.55), 0 0 42px rgba(59,130,246,0.28)",
+          }}
+          animate={
+            reduceMotion
+              ? { opacity: 0.8 }
+              : {
+                  y: [0, -14, 0],
+                  x: [0, 6, 0],
+                  opacity: [0.45, 1, 0.45],
+                  scale: [1, 1.12, 1],
+                }
+          }
+          transition={
+            reduceMotion
+              ? undefined
+              : {
+                  duration: n.dur,
+                  delay: n.delay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function Hero() {
   const sections = ["home", "about", "experience", "skills", "contact"];
   const active = useActiveSection(sections);
@@ -696,6 +765,7 @@ export default function Hero() {
             <div className="relative overflow-hidden">
               <div className="relative h-[340px] sm:h-[420px]">
                 <AuroraVisual />
+                <FlowConstellation />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#010101] via-transparent to-[#010101]" />
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#010101] to-transparent" />
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#010101] to-transparent" />
