@@ -1,16 +1,6 @@
 import * as React from "react";
 import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
 import { ArrowRight, Download, Mail, MapPin, Phone, Sparkles, Zap } from "lucide-react";
-import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
-import {
-  ArrowRight,
-  Download,
-  Mail,
-  MapPin,
-  Phone,
-  Sparkles,
-  Zap,
-} from "lucide-react";
 import { cn } from "./lib/cn";
 import { InfiniteSlider } from "./components/ui/infinite-slider";
 import { useToast } from "./components/ui/toast";
@@ -381,7 +371,6 @@ function FlowConstellation() {
         opacity: layerOpacity,
       }}
     >
-    <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
       <svg
         className="absolute inset-0 h-full w-full opacity-55"
         viewBox="0 0 100 100"
@@ -436,7 +425,6 @@ function FlowConstellation() {
         />
       ))}
     </motion.div>
-    </div>
   );
 }
 
