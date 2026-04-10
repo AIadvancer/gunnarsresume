@@ -1,4 +1,6 @@
 import * as React from "react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { ArrowRight, Download, Mail, MapPin, Phone, Sparkles, Zap } from "lucide-react";
 import { motion, useReducedMotion, useScroll, useSpring } from "motion/react";
 import {
   ArrowRight,
@@ -353,6 +355,16 @@ function AuroraVisual() {
 
 function FlowConstellation() {
   const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const parallaxY = useSpring(useTransform(scrollYProgress, [0, 1], [0, -70]), {
+    stiffness: 110,
+    damping: 20,
+  });
+  const layerOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.35, 1],
+    [0.88, 1, 0.72]
+  );
   const nodes = [
     { x: "10%", y: "20%", delay: 0, dur: 6.2, size: 8 },
     { x: "28%", y: "62%", delay: 0.6, dur: 8.1, size: 6 },
@@ -362,6 +374,13 @@ function FlowConstellation() {
   ];
 
   return (
+    <motion.div
+      className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+      style={{
+        y: reduceMotion ? 0 : parallaxY,
+        opacity: layerOpacity,
+      }}
+    >
     <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden">
       <svg
         className="absolute inset-0 h-full w-full opacity-55"
@@ -416,6 +435,7 @@ function FlowConstellation() {
           }
         />
       ))}
+    </motion.div>
     </div>
   );
 }
@@ -781,7 +801,12 @@ export default function Hero() {
                       <div className="hidden h-8 w-px bg-white/10 md:block" />
                     </div>
 
-                    <InfiniteSlider items={HIGHLIGHT_TICKER} speed={70} className="w-full" />
+                    <InfiniteSlider
+                      items={HIGHLIGHT_TICKER}
+                      speed={70}
+                      speedBoostOnScroll
+                      className="w-full"
+                    />
                   </div>
                 </div>
               </div>
