@@ -1,184 +1,23 @@
 import * as React from "react";
-import { motion, useScroll, useSpring } from "motion/react";
-import {
-  ArrowRight,
-  Download,
-  Mail,
-  MapPin,
-  Phone,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "motion/react";
+import { ArrowRight, Download, Mail, MapPin, Phone, Sparkles, Zap } from "lucide-react";
 import { cn } from "./lib/cn";
 import { InfiniteSlider } from "./components/ui/infinite-slider";
 import { useToast } from "./components/ui/toast";
 
-type ExperienceCategory =
-  | "all"
-  | "events"
-  | "hospitality"
-  | "retail"
-  | "volunteer";
-
-type Experience = {
-  id: string;
-  category: Exclude<ExperienceCategory, "all">;
-  emoji: string;
-  role: string;
-  company: string;
-  location: string;
-  dates: string;
-  highlights: string[];
-};
-
-const PROFILE = {
-  name: "Gunnar Patterson",
-  title: "Event & Hospitality Professional",
-  tagline:
-    "Event and hospitality professional with experience in large-scale events, logistics, guest service, and day-to-day operations.",
-  email: "gunrp2@gmail.com",
-  phone: "(864) 491-9201",
-  phoneHref: "+18644919201",
-  location: "316 Pendleton Rd, Clemson, SC 29631",
-  resumeHref: "/resume.pdf",
-};
-
-const STATS = [
-  { value: "800+", label: "Event hours" },
-  { value: "2", label: "Festival seasons" },
-  { value: "5+", label: "Years service" },
-];
-
-const EXPERIENCE: Experience[] = [
-  {
-    id: "best-western",
-    category: "hospitality",
-    emoji: "🏨",
-    role: "Front Desk Associate",
-    company: "Best Western Plus",
-    location: "Clemson, SC",
-    dates: "October 2025 – May 2026",
-    highlights: [
-      "Managed front desk operations and welcomed guests in a fast-paced hospitality environment.",
-      "Handled guest check-ins and check-outs while maintaining a professional first impression.",
-      "Answered questions, resolved issues, and supported a smooth customer experience throughout each stay.",
-      "Balanced phone communication, in-person service, and administrative front desk tasks efficiently.",
-      "Strengthened hospitality, communication, and problem-solving skills in a customer-facing role.",
-    ],
-  },
-  {
-    id: "holywood",
-    category: "events",
-    emoji: "🎪",
-    role: "Event Management Intern",
-    company: "Holywood Productions",
-    location: "Gaffney, SC",
-    dates: "May 2024 – August 2024 • May 2025 – August 2025",
-    highlights: [
-      "Completed over 800 hours of immersive event planning and execution experience.",
-      "Helped deliver major live events including the Carolina Country Music Festival.",
-      "Supported logistics, vendor coordination, and on-site operations in fast-paced environments.",
-      "Assisted with a large professional LIUNA booth activation at the NASCAR Cup Series in Nashville, Tennessee.",
-      "Developed hands-on experience transporting equipment and event materials over long distances using large vehicles.",
-      "Worked across diverse teams to create smooth attendee experiences and successful event outcomes.",
-    ],
-  },
-  {
-    id: "food-lion",
-    category: "retail",
-    emoji: "🛒",
-    role: "Grocery Associate",
-    company: "Food Lion Grocery",
-    location: "Central, SC",
-    dates: "April 2019 – January 2024",
-    highlights: [
-      "Maintained floor displays and replenished merchandise to keep presentation standards high.",
-      "Assisted customers quickly and effectively, improving the in-store experience.",
-      "Managed inventory scanning, counting, and discrepancy reporting for department leadership.",
-      "Kept aisles and displays clean, organized, and customer-ready in a busy retail environment.",
-      "Brought long-term consistency and reliability across both Blacksburg and Central store locations.",
-    ],
-  },
-  {
-    id: "clemson-parks",
-    category: "volunteer",
-    emoji: "🌳",
-    role: "Volunteer",
-    company: "City of Clemson Parks and Recreation",
-    location: "Clemson, SC",
-    dates: "March 2023",
-    highlights: [
-      "Engaged professionally with community members and staff to support recreation initiatives.",
-      "Maintained communication with staff about volunteer opportunities and events.",
-      "Helped build local partnerships that supported community programming.",
-      "Provided IT support for older community members to improve digital access.",
-    ],
-  },
-];
-
-const SKILL_TAGS = [
-  "Event Planning and Management",
-  "Logistics and Transportation",
-  "Customer Service Excellence",
-  "Team Collaboration and Leadership",
-  "Creative Problem-Solving",
-  "Advanced Software Skills",
-  "AI Technology Familiarity",
-  "Strong Communication",
-  "Adaptability and Flexibility",
-  "Attention to Detail",
-  "Cultural Awareness and Sensitivity",
-  "Front Desk Operations",
-  "Guest Relations",
-];
-
-const SKILL_GROUPS = [
-  {
-    title: "Event & Operations",
-    items: [
-      "Event Planning and Management",
-      "Logistics and Transportation",
-      "Team Collaboration and Leadership",
-      "Attention to Detail",
-      "Adaptability and Flexibility",
-    ],
-  },
-  {
-    title: "People & Service",
-    items: [
-      "Customer Service Excellence",
-      "Strong Communication",
-      "Cultural Awareness and Sensitivity",
-      "Guest Relations",
-      "Front Desk Operations",
-    ],
-  },
-  {
-    title: "Technical & Creative",
-    items: [
-      "Advanced Software Skills",
-      "AI Technology Familiarity",
-      "Creative Problem-Solving",
-    ],
-  },
-];
-
-const HIGHLIGHT_TICKER = [
-  { alt: "Festival logistics + on-site ops" },
-  { alt: "Front desk + guest experience" },
-  { alt: "Vendor coordination" },
-  { alt: "Fast problem-solving under pressure" },
-  { alt: "Team collaboration" },
-  { alt: "Transport + equipment handling" },
-  { alt: "Inventory scanning + reporting" },
-  { alt: "Professional communication" },
-  { alt: "Software fluency + AI familiarity" },
-  { alt: "Detail-oriented execution" },
-];
+import {
+  EXPERIENCE,
+  HIGHLIGHT_TICKER,
+  PROFILE,
+  SKILL_GROUPS,
+  SKILL_TAGS,
+  STATS,
+  type ExperienceCategory,
+} from "./content/portfolio-data";
 
 function Pill({ children }: { children: React.ReactNode }) {
   return (
-    <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-[rgba(28,27,36,0.18)] px-4 py-2 backdrop-blur-md">
+    <div className="inline-flex items-center gap-3 rounded-full border border-white/15 bg-[linear-gradient(140deg,rgba(28,27,36,0.55),rgba(12,12,17,0.35))] px-4 py-2 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
       {children}
     </div>
   );
@@ -204,12 +43,13 @@ function GlassCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/10 bg-white/[0.05] backdrop-blur-xl",
-        "shadow-[0_30px_90px_rgba(0,0,0,0.45)]",
-        "transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-1",
-        "transition-colors hover:border-white/20 hover:bg-white/[0.07]",
+        "relative overflow-hidden rounded-3xl border border-white/10 bg-[linear-gradient(170deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] backdrop-blur-2xl",
+        "shadow-[0_30px_95px_rgba(0,0,0,0.52)]",
+        "transition-all duration-300 ease-[cubic-bezier(0.2,0,0,1)] hover:-translate-y-1.5 hover:shadow-[0_38px_110px_rgba(0,0,0,0.56)]",
+        "hover:border-white/25",
         "before:pointer-events-none before:absolute before:inset-0 before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100",
-        "before:bg-[radial-gradient(600px_circle_at_25%_10%,rgba(250,147,250,0.14),transparent_60%),radial-gradient(650px_circle_at_75%_70%,rgba(152,58,214,0.12),transparent_60%)]",
+        "before:bg-[radial-gradient(640px_circle_at_20%_4%,rgba(250,147,250,0.18),transparent_58%),radial-gradient(640px_circle_at_85%_78%,rgba(59,130,246,0.16),transparent_58%)]",
+        "after:pointer-events-none after:absolute after:inset-0 after:rounded-[inherit] after:border after:border-white/[0.06]",
         className
       )}
     >
@@ -254,7 +94,8 @@ function SectionHeading({
       <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
         {kicker}
       </div>
-      <h2 className="mt-3 text-balance text-3xl sm:text-4xl font-semibold tracking-tight">
+      <div className="premium-divider" aria-hidden="true" />
+      <h2 className="mt-4 text-balance text-3xl sm:text-4xl font-semibold tracking-tight">
         <span className="bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
           {title}
         </span>
@@ -349,6 +190,91 @@ function AuroraVisual() {
   );
 }
 
+function FlowConstellation() {
+  const reduceMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const parallaxY = useSpring(useTransform(scrollYProgress, [0, 1], [0, -70]), {
+    stiffness: 110,
+    damping: 20,
+  });
+  const layerOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.35, 1],
+    [0.88, 1, 0.72]
+  );
+  const nodes = [
+    { x: "10%", y: "20%", delay: 0, dur: 6.2, size: 8 },
+    { x: "28%", y: "62%", delay: 0.6, dur: 8.1, size: 6 },
+    { x: "48%", y: "30%", delay: 1.2, dur: 7.4, size: 10 },
+    { x: "66%", y: "72%", delay: 1.8, dur: 8.6, size: 6 },
+    { x: "84%", y: "38%", delay: 0.9, dur: 7.8, size: 8 },
+  ];
+
+  return (
+    <motion.div
+      className="pointer-events-none absolute inset-0 z-10 overflow-hidden"
+      style={{
+        y: reduceMotion ? 0 : parallaxY,
+        opacity: layerOpacity,
+      }}
+    >
+      <svg
+        className="absolute inset-0 h-full w-full opacity-55"
+        viewBox="0 0 100 100"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="flowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="rgba(250,147,250,0)" />
+            <stop offset="45%" stopColor="rgba(250,147,250,0.42)" />
+            <stop offset="100%" stopColor="rgba(59,130,246,0)" />
+          </linearGradient>
+        </defs>
+        <path d="M 4 62 C 18 34, 35 82, 54 48 S 84 34, 96 58" stroke="url(#flowLine)" strokeWidth="0.6" fill="none" />
+        <path d="M 0 40 C 20 54, 36 24, 58 44 S 86 70, 100 52" stroke="url(#flowLine)" strokeWidth="0.45" fill="none" />
+      </svg>
+
+      {nodes.map((n, idx) => (
+        <motion.span
+          key={`${n.x}-${n.y}-${idx}`}
+          className="absolute rounded-full"
+          style={{
+            left: n.x,
+            top: n.y,
+            width: n.size,
+            height: n.size,
+            background:
+              "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.95), rgba(250,147,250,0.8) 55%, rgba(59,130,246,0.2) 100%)",
+            boxShadow:
+              "0 0 18px rgba(250,147,250,0.55), 0 0 42px rgba(59,130,246,0.28)",
+          }}
+          animate={
+            reduceMotion
+              ? { opacity: 0.8 }
+              : {
+                  y: [0, -14, 0],
+                  x: [0, 6, 0],
+                  opacity: [0.45, 1, 0.45],
+                  scale: [1, 1.12, 1],
+                }
+          }
+          transition={
+            reduceMotion
+              ? undefined
+              : {
+                  duration: n.dur,
+                  delay: n.delay,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }
+          }
+        />
+      ))}
+    </motion.div>
+  );
+}
+
 export default function Hero() {
   const sections = ["home", "about", "experience", "skills", "contact"];
   const active = useActiveSection(sections);
@@ -385,7 +311,7 @@ export default function Hero() {
       />
 
       <div className="sticky top-4 z-40 mx-auto max-w-6xl px-6">
-        <div className="rounded-3xl border border-white/10 bg-black/30 backdrop-blur-xl shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
+        <div className="rounded-3xl border border-white/15 bg-[linear-gradient(160deg,rgba(10,10,14,0.72),rgba(17,17,25,0.45))] backdrop-blur-2xl shadow-[0_24px_70px_rgba(0,0,0,0.52)]">
           <div className="flex items-center justify-between gap-4 px-4 py-3 sm:px-6">
             <button
               className="text-left"
@@ -407,7 +333,7 @@ export default function Hero() {
                   type="button"
                   onClick={() => onNav(id)}
                   className={cn(
-                    "rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
+                    "nav-chip rounded-2xl px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white",
                     active === id &&
                       "bg-white/5 text-white border border-white/10"
                   )}
@@ -437,7 +363,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <main className="relative mx-auto max-w-6xl px-6 pb-24">
+      <main className="relative mx-auto max-w-6xl px-6 pb-28">
         <section id="home" className="pt-20 sm:pt-24">
           <motion.div
             initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
@@ -454,7 +380,7 @@ export default function Hero() {
               </span>
             </Pill>
 
-            <h1 className="mt-8 text-balance text-[44px] font-semibold leading-[1.02] tracking-tight sm:text-[64px] lg:text-[76px]">
+            <h1 className="mt-8 text-balance text-[44px] font-semibold leading-[1.01] tracking-tight sm:text-[66px] lg:text-[80px] drop-shadow-[0_10px_30px_rgba(0,0,0,0.45)]">
               <span className="block bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
                 {PROFILE.name}
               </span>
@@ -466,6 +392,12 @@ export default function Hero() {
             <p className="mx-auto mt-6 max-w-2xl text-pretty text-base leading-relaxed text-white/75 sm:text-lg">
               {PROFILE.tagline}
             </p>
+
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.18em] text-white/55">
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Open to relocation</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Available immediately</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Event + Ops Focus</span>
+            </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
               <a
@@ -500,7 +432,7 @@ export default function Hero() {
               {STATS.map((s) => (
                 <div
                   key={s.label}
-                  className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-4 backdrop-blur transition hover:bg-white/[0.06]"
+                  className="rounded-2xl border border-white/10 bg-[linear-gradient(160deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] px-5 py-4 backdrop-blur-xl transition hover:-translate-y-[2px] hover:bg-white/[0.10]"
                 >
                   <div className="text-xl font-semibold text-white">
                     {s.value}
@@ -688,6 +620,7 @@ export default function Hero() {
             <div className="relative overflow-hidden">
               <div className="relative h-[340px] sm:h-[420px]">
                 <AuroraVisual />
+                <FlowConstellation />
                 <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#010101] via-transparent to-[#010101]" />
                 <div className="pointer-events-none absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-[#010101] to-transparent" />
                 <div className="pointer-events-none absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-[#010101] to-transparent" />
@@ -703,7 +636,12 @@ export default function Hero() {
                       <div className="hidden h-8 w-px bg-white/10 md:block" />
                     </div>
 
-                    <InfiniteSlider items={HIGHLIGHT_TICKER} speed={70} className="w-full" />
+                    <InfiniteSlider
+                      items={HIGHLIGHT_TICKER}
+                      speed={70}
+                      speedBoostOnScroll
+                      className="w-full"
+                    />
                   </div>
                 </div>
               </div>
@@ -711,7 +649,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="about" className="mt-20">
+        <section id="about" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Profile"
             title="About Gunnar"
@@ -765,7 +704,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="experience" className="mt-20">
+        <section id="experience" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Career"
             title="Experience that translates"
@@ -852,7 +792,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="skills" className="mt-20">
+        <section id="skills" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Capabilities"
             title="Skills built for modern work"
@@ -934,7 +875,8 @@ export default function Hero() {
           </div>
         </section>
 
-        <section id="contact" className="mt-20">
+        <section id="contact" className="section-shell mt-20">
+          <div className="premium-dot-grid" aria-hidden="true" />
           <SectionHeading
             kicker="Connect"
             title="Let’s connect"
@@ -1063,6 +1005,23 @@ export default function Hero() {
 
                     <button
                       type="button"
+                      onClick={async () => {
+                        const ok = await copyToClipboard(window.location.href);
+                        push(ok ? "Page link copied" : "Copy failed");
+                      }}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
+                    >
+                      <div>
+                        <div className="text-[11px] tracking-[0.22em] uppercase text-white/55">
+                          Share Portfolio
+                        </div>
+                        <div className="mt-1 font-semibold">Copy this page link</div>
+                      </div>
+                      <span className="text-white/70">↗</span>
+                    </button>
+
+                    <button
+                      type="button"
                       onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                       className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white transition hover:bg-white/10 hover:-translate-y-[1px]"
                     >
@@ -1081,7 +1040,7 @@ export default function Hero() {
           </div>
 
           <div className="mt-10 text-center text-sm text-white/50">
-            Built as a GitHub Pages-ready portfolio.
+            Crafted as a premium GitHub Pages portfolio experience.
           </div>
         </section>
       </main>
