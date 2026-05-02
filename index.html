@@ -404,11 +404,12 @@
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(18px);
       -webkit-backdrop-filter: blur(18px);
       position: relative;
       overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card-inner {
@@ -417,16 +418,20 @@
       z-index: 2;
     }
 
-    .reveal {
-      opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
-      will-change: opacity, transform;
+    @keyframes cardEntrance {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .reveal.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+
+    .page.active .card {
+      animation: cardEntrance 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
     }
+    .page.active .card:nth-child(1) { animation-delay: 0.02s; }
+    .page.active .card:nth-child(2) { animation-delay: 0.10s; }
+    .page.active .card:nth-child(3) { animation-delay: 0.18s; }
+    .page.active .card:nth-child(4) { animation-delay: 0.26s; }
+    .page.active .card:nth-child(5) { animation-delay: 0.34s; }
+    .page.active .card:nth-child(6) { animation-delay: 0.42s; }
 
     .hero-card::before,
     .contact-side::before {
@@ -458,15 +463,25 @@
     .eyebrow-chip {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
+      gap: 10px;
+      padding: 10px 16px;
       border-radius: 999px;
       background: rgba(103, 232, 249, 0.1);
-      border: 1px solid rgba(103, 232, 249, 0.18);
+      border: 1px solid rgba(103, 232, 249, 0.22);
       color: #c6f7fd;
       font-size: 12px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .eyebrow-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(103, 232, 249, 0.55);
+      animation: techPulse 2.4s ease-in-out infinite;
     }
 
     h1, h2, h3, p { margin: 0; }
@@ -476,10 +491,20 @@
       font-size: clamp(48px, 9vw, 92px);
       line-height: 0.95;
       letter-spacing: -0.04em;
-      font-weight: 700;
+      font-weight: 800;
+      background: linear-gradient(180deg, #f8fbff 0%, #c1d4eb 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
-    .hero-name span { color: var(--accent); display: block; }
+    .hero-name span {
+      display: block;
+      background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 50%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
 
     .hero-copy {
       margin-top: 24px;
@@ -487,6 +512,19 @@
       font-size: 18px;
       line-height: 1.8;
       color: var(--soft);
+    }
+
+    .hero-copy strong {
+      color: #e6fcff;
+      font-weight: 700;
+      background: linear-gradient(180deg, transparent 65%, rgba(103, 232, 249, 0.22) 65%);
+      padding: 0 2px;
+    }
+
+    .hero-copy em {
+      font-style: normal;
+      color: var(--accent);
+      font-weight: 600;
     }
 
     .stats-row {
@@ -498,16 +536,27 @@
 
     .stat {
       border: 1px solid var(--border);
-      background: rgba(7, 13, 24, 0.46);
-      border-radius: 22px;
+      background: rgba(7, 13, 24, 0.5);
+      border-radius: 18px;
       padding: 14px 16px;
+      transition: border-color 0.22s ease, transform 0.22s ease, background 0.22s ease;
+    }
+
+    .stat:hover {
+      border-color: rgba(103, 232, 249, 0.30);
+      transform: translateY(-2px);
+      background: rgba(7, 13, 24, 0.7);
     }
 
     .stat-number {
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 850;
       letter-spacing: -0.02em;
       color: #dffcff;
+      background: linear-gradient(180deg, #f0fdff 0%, #a7e8f0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .stat-label {
@@ -533,19 +582,27 @@
     }
 
     .cta {
-      background: var(--accent);
+      background: linear-gradient(135deg, #67e8f9 0%, #22d3ee 100%);
       color: #082131;
+      box-shadow: 0 10px 28px rgba(34, 211, 238, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.4);
     }
 
     .cta:hover {
-      transform: translateY(-1px);
-      background: #8ef2ff;
+      transform: translateY(-2px);
+      box-shadow: 0 14px 36px rgba(34, 211, 238, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      filter: brightness(1.05);
     }
 
     .ghost {
       background: rgba(255, 255, 255, 0.05);
       color: var(--text);
       border: 1px solid var(--border);
+    }
+
+    .ghost:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(103, 232, 249, 0.35);
+      transform: translateY(-1px);
     }
 
     .pill-grid {
@@ -567,7 +624,32 @@
       border-radius: 22px;
     }
 
-    .mini-panel { padding: 18px; }
+    .mini-panel {
+      padding: 18px;
+      transition: transform 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+    .mini-panel:hover {
+      transform: translateY(-2px);
+      border-color: rgba(103, 232, 249, 0.28);
+      background: rgba(7, 13, 24, 0.62);
+    }
+
+    .mini-panel-accent {
+      background:
+        radial-gradient(120% 100% at 0% 0%, rgba(103, 232, 249, 0.14), transparent 60%),
+        rgba(7, 13, 24, 0.6);
+      border-color: rgba(103, 232, 249, 0.28);
+      position: relative;
+      overflow: hidden;
+    }
+    .mini-panel-accent::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: inherit;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
 
     .mini-icon,
     .section-icon {
@@ -622,6 +704,11 @@
       font-size: clamp(34px, 4.5vw, 56px);
       line-height: 1.05;
       letter-spacing: -0.03em;
+      font-weight: 800;
+      background: linear-gradient(180deg, #f8fbff 0%, #b6cce3 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .section-subtitle {
@@ -800,49 +887,104 @@
       justify-content: center;
     }
 
-    .spotlight-meta {
-      margin-top: 14px;
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.7;
+    .tech-card {
+      position: relative;
+      background:
+        radial-gradient(80% 60% at 100% 0%, rgba(103, 232, 249, 0.12), transparent 60%),
+        radial-gradient(60% 80% at 0% 100%, rgba(59, 130, 246, 0.10), transparent 65%),
+        var(--panel);
+      border: 1px solid rgba(103, 232, 249, 0.22);
     }
 
-    .spotlight-metrics {
-      margin-top: 18px;
+    .tech-card-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(103, 232, 249, 0.10);
+      border: 1px solid rgba(103, 232, 249, 0.22);
+      color: #c6f7fd;
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+    }
+
+    .tech-card-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(103, 232, 249, 0.6);
+      animation: techPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes techPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(103, 232, 249, 0.55); }
+      50% { box-shadow: 0 0 0 8px rgba(103, 232, 249, 0); }
+    }
+
+    .tech-stack-block {
+      margin-top: 22px;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .metric {
+      gap: 14px;
+      padding: 18px;
+      border-radius: 22px;
+      background: rgba(7, 13, 24, 0.5);
       border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
-      border-radius: 20px;
-      padding: 14px 14px;
     }
 
-    .metric-number { font-size: 20px; font-weight: 850; color: #dffcff; }
-    .metric-label {
-      margin-top: 6px;
-      font-size: 12px;
-      letter-spacing: 0.18em;
+    .tech-stack-row {
+      display: grid;
+      gap: 8px;
+    }
+
+    .tech-stack-label {
+      font-size: 11px;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--muted);
     }
 
-    .spotlight-controls {
-      margin-top: 18px;
+    .tech-stack-chips {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
       flex-wrap: wrap;
+      gap: 6px;
     }
 
-    .spotlight-nav {
-      display: flex;
-      gap: 10px;
+    .tech-chip {
+      display: inline-flex;
       align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--soft);
+      letter-spacing: 0.01em;
+      transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    }
+
+    .tech-chip:hover {
+      background: rgba(103, 232, 249, 0.10);
+      border-color: rgba(103, 232, 249, 0.30);
+      color: #e6fcff;
+    }
+
+    .tech-chip-accent {
+      background: rgba(103, 232, 249, 0.12);
+      border-color: rgba(103, 232, 249, 0.32);
+      color: #d6f7fd;
+    }
+
+    .tech-card-cta {
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      justify-content: center;
     }
 
     .quick-stack { display: grid; gap: 12px; margin-top: 24px; }
@@ -918,8 +1060,7 @@
       .grid-split,
       .experience-grid,
       .grid-three,
-      .pill-grid,
-      .spotlight-metrics {
+      .pill-grid {
         grid-template-columns: 1fr;
       }
 
@@ -961,7 +1102,7 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .bg-fluid, .bg-grid, .blur-orb { animation: none; }
-      .reveal { transition: none; transform: none; opacity: 1; }
+      .page.active .card { animation: none; }
       .fab-btn { transition: none; }
     }
   </style>
@@ -1017,13 +1158,20 @@
         <div class="grid-hero">
           <article class="card hero-card">
             <div class="card-inner">
-              <div class="eyebrow-chip">Resume Portfolio</div>
+              <div class="eyebrow-chip">
+                <span class="eyebrow-dot" aria-hidden="true"></span>
+                Events &times; Tech &times; AI
+              </div>
               <h1 class="hero-name">Gunnar <span>Patterson</span></h1>
               <p class="hero-copy">
-                Event and hospitality professional with experience in large-scale events, logistics, guest service, and day-to-day operations.
+                Event &amp; hospitality professional with two years of college-level <strong>computer science</strong> and deep <strong>AI fluency</strong> — the rare blend of someone who can run logistics on the ground <em>and</em> get real work out of modern technology.
               </p>
 
               <div class="stats-row" aria-label="Highlights">
+                <div class="stat">
+                  <div class="stat-number" data-count="2" data-suffix=" yrs">0 yrs</div>
+                  <div class="stat-label">CS coursework</div>
+                </div>
                 <div class="stat">
                   <div class="stat-number" data-count="800" data-suffix="+">0+</div>
                   <div class="stat-label">Event hours</div>
@@ -1031,10 +1179,6 @@
                 <div class="stat">
                   <div class="stat-number" data-count="2" data-suffix="">0</div>
                   <div class="stat-label">Festival seasons</div>
-                </div>
-                <div class="stat">
-                  <div class="stat-number" data-count="2" data-suffix=" yrs">0 yrs</div>
-                  <div class="stat-label">CS coursework</div>
                 </div>
                 <div class="stat">
                   <div class="stat-number" data-count="5" data-suffix="+">0+</div>
@@ -1049,49 +1193,66 @@
               </div>
 
               <div class="pill-grid">
+                <div class="mini-panel mini-panel-accent">
+                  <div class="mini-icon">💻</div>
+                  <div class="mini-title">Technical Edge</div>
+                  <div class="mini-copy">Two years of college-level computer science, fluent with modern AI tooling, and quick on new software. Bridges operations work and the technology that runs it.</div>
+                </div>
                 <div class="mini-panel">
                   <div class="mini-icon">📅</div>
                   <div class="mini-title">Live Event Execution</div>
-                  <div class="mini-copy">Experience supporting major, high-energy events with moving parts, hard deadlines, and on-site problem-solving.</div>
-                </div>
-                <div class="mini-panel">
-                  <div class="mini-icon">💻</div>
-                  <div class="mini-title">Technical Edge</div>
-                  <div class="mini-copy">Two years of college-level computer science, fluent with modern AI tooling, and quick to pick up new software. Comfortable bridging operations work and the technology that runs it.</div>
+                  <div class="mini-copy">Major, high-energy events with moving parts, hard deadlines, and on-site problem-solving.</div>
                 </div>
                 <div class="mini-panel">
                   <div class="mini-icon">🚚</div>
                   <div class="mini-title">Operations &amp; Logistics</div>
-                  <div class="mini-copy">Comfortable with transport, setup, coordination, and the practical work that keeps an event running smoothly.</div>
+                  <div class="mini-copy">Transport, setup, coordination — the practical work that keeps an event running smoothly.</div>
                 </div>
               </div>
             </div>
           </article>
 
           <div class="stack">
-            <article class="card">
+            <article class="card tech-card">
               <div class="card-inner">
-                <div class="label">Contact</div>
-                <div class="stack" style="gap: 14px; margin-top: 18px;">
-                  <a class="contact-link detail-block" href="mailto:gunrp2@gmail.com">
-                    <div class="section-icon">✉</div>
-                    <div>
-                      <div class="quick-title">gunrp2@gmail.com</div>
+                <div class="label tech-card-label">
+                  <span class="tech-card-pulse" aria-hidden="true"></span>
+                  Tech &amp; AI Toolkit
+                </div>
+                <h3 style="font-size: 24px; font-weight: 800; margin-top: 14px; line-height: 1.25;">CS-trained, AI-fluent, fast on new tools</h3>
+                <p class="copy-block muted" style="margin-top: 12px; font-size: 14px;">
+                  Two years of college-level computer science plus self-directed AI depth — the blend that lets him pick up new systems quickly and get real work out of modern tooling.
+                </p>
+
+                <div class="tech-stack-block">
+                  <div class="tech-stack-row">
+                    <div class="tech-stack-label">CS Foundations</div>
+                    <div class="tech-stack-chips">
+                      <span class="tech-chip">Programming</span>
+                      <span class="tech-chip">Debugging</span>
+                      <span class="tech-chip">Problem Decomposition</span>
                     </div>
-                  </a>
-                  <a class="contact-link detail-block" href="tel:+18644919201">
-                    <div class="section-icon">☎</div>
-                    <div>
-                      <div class="quick-title">(864) 491-9201</div>
+                  </div>
+                  <div class="tech-stack-row">
+                    <div class="tech-stack-label">AI Stack</div>
+                    <div class="tech-stack-chips">
+                      <span class="tech-chip tech-chip-accent">ChatGPT</span>
+                      <span class="tech-chip tech-chip-accent">Claude</span>
+                      <span class="tech-chip tech-chip-accent">Gemini</span>
+                      <span class="tech-chip">Prompt Engineering</span>
                     </div>
-                  </a>
-                  <div class="detail-block">
-                    <div class="section-icon">📍</div>
-                    <div>
-                      <div class="quick-title">316 Pendleton Rd, Clemson, SC 29631</div>
+                  </div>
+                  <div class="tech-stack-row">
+                    <div class="tech-stack-label">Tools</div>
+                    <div class="tech-stack-chips">
+                      <span class="tech-chip">Modern Web</span>
+                      <span class="tech-chip">Productivity Suites</span>
+                      <span class="tech-chip">Quick Software Adoption</span>
                     </div>
                   </div>
                 </div>
+
+                <button class="ghost tech-card-cta" type="button" data-page="skills">See full skill stack →</button>
               </div>
             </article>
 
@@ -1115,43 +1276,27 @@
               </div>
             </article>
 
-            <article class="card" id="spotlightCard">
+            <article class="card">
               <div class="card-inner">
-                <div class="label">Spotlight</div>
-                <h3 style="font-size: 22px; font-weight: 800; margin-top: 16px;">Tap through the highlights</h3>
-                <p class="copy-block muted" style="margin-top: 12px;">
-                  Quick skim of the strongest role examples. Use the arrows, then jump straight to the full entry.
-                </p>
-
-                <div id="spotlightBody" style="margin-top: 18px;">
-                  <div class="role-chip" id="spotlightRoleChip"><span>🎪</span><span>Event Management Intern</span></div>
-                  <div class="company" id="spotlightCompany" style="font-size: 24px; margin-top: 14px;">Holywood Productions</div>
-                  <div class="spotlight-meta" id="spotlightMeta">Gaffney, SC • May 2024 – Aug 2024 • May 2025 – Aug 2025</div>
-                  <p class="copy-block" id="spotlightSummary" style="margin-top: 14px;">
-                    Supported large-scale events and activations with hands-on logistics, vendor support, and on-site problem solving.
-                  </p>
-
-                  <div class="spotlight-metrics" aria-label="Spotlight metrics">
-                    <div class="metric">
-                      <div class="metric-number" id="spotlightMetric1">800+</div>
-                      <div class="metric-label" id="spotlightMetricLabel1">Hours</div>
+                <div class="label">Contact</div>
+                <div class="stack" style="gap: 14px; margin-top: 18px;">
+                  <a class="contact-link detail-block" href="mailto:gunrp2@gmail.com">
+                    <div class="section-icon">✉</div>
+                    <div>
+                      <div class="quick-title">gunrp2@gmail.com</div>
                     </div>
-                    <div class="metric">
-                      <div class="metric-number" id="spotlightMetric2">CCMF</div>
-                      <div class="metric-label" id="spotlightMetricLabel2">Festival</div>
+                  </a>
+                  <a class="contact-link detail-block" href="tel:+18644919201">
+                    <div class="section-icon">☎</div>
+                    <div>
+                      <div class="quick-title">(864) 491-9201</div>
                     </div>
-                    <div class="metric">
-                      <div class="metric-number" id="spotlightMetric3">NASCAR</div>
-                      <div class="metric-label" id="spotlightMetricLabel3">Activation</div>
+                  </a>
+                  <div class="detail-block">
+                    <div class="section-icon">📍</div>
+                    <div>
+                      <div class="quick-title">316 Pendleton Rd, Clemson, SC 29631</div>
                     </div>
-                  </div>
-
-                  <div class="spotlight-controls">
-                    <div class="spotlight-nav">
-                      <button class="icon-btn" type="button" id="spotlightPrev" aria-label="Previous spotlight">←</button>
-                      <button class="icon-btn" type="button" id="spotlightNext" aria-label="Next spotlight">→</button>
-                    </div>
-                    <button class="ghost" type="button" id="spotlightJump">Jump to role</button>
                   </div>
                 </div>
               </div>
@@ -1660,7 +1805,7 @@
         mainContent?.focus({ preventScroll: true });
       }
 
-      setupRevealForPage(pageEls[safePage]);
+      restartCardAnimations(pageEls[safePage]);
 
       if (pendingScrollToId) {
         const id = pendingScrollToId;
@@ -1702,23 +1847,14 @@
       setActivePage(location.hash.replace("#", "") || "home", false);
     });
 
-    const revealObserver = ("IntersectionObserver" in window)
-      ? new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        }, { root: null, threshold: 0.12, rootMargin: "0px 0px -10% 0px" })
-      : null;
-
-    function setupRevealForPage(container) {
-      if (!container || !revealObserver) return;
-      const els = Array.from(container.querySelectorAll(".card"));
-      els.forEach((el) => {
-        if (!el.classList.contains("reveal")) el.classList.add("reveal");
-        revealObserver.observe(el);
+    function restartCardAnimations(container) {
+      if (!container) return;
+      const cards = Array.from(container.querySelectorAll(":scope > .card, :scope > .stack > .card, :scope > .grid-two > .card, :scope > .grid-split > .card, :scope > .grid-hero > .card, :scope > .grid-hero > .stack > .card, :scope > .grid-three > .card, :scope > .stack > .grid-two > .card, :scope > .stack > .grid-three > .card"));
+      cards.forEach((card) => {
+        card.style.animation = "none";
+        // force reflow so the animation restarts on re-entry
+        void card.offsetWidth;
+        card.style.animation = "";
       });
     }
 
@@ -1866,137 +2002,6 @@ Sent from hiregunnar.live quick form`);
       el.addEventListener("click", () => setSkillSearch(el.textContent.trim()));
     });
 
-    const spotlights = [
-      {
-        emoji: "🎪",
-        title: "Event Management Intern",
-        company: "Holywood Productions",
-        meta: "Gaffney, SC • May 2024 – Aug 2024 • May 2025 – Aug 2025",
-        summary: "Supported large-scale events and activations with hands-on logistics, vendor support, and on-site problem solving.",
-        metrics: [
-          ["800+", "Hours"],
-          ["CCMF", "Festival"],
-          ["NASCAR", "Activation"],
-        ],
-        jumpId: "exp-holywood",
-      },
-      {
-        emoji: "🏨",
-        title: "Front Desk Associate",
-        company: "Best Western Plus",
-        meta: "Clemson, SC • Oct 2025 – May 2026",
-        summary: "Handled guest service, front desk operations, and issue resolution while keeping the experience smooth and professional.",
-        metrics: [
-          ["Fast", "Service"],
-          ["Guest", "Experience"],
-          ["Ops", "Reliability"],
-        ],
-        jumpId: "exp-best-western",
-      },
-      {
-        emoji: "🛒",
-        title: "Grocery Associate",
-        company: "Food Lion Grocery",
-        meta: "Central, SC • Apr 2019 – Jan 2024",
-        summary: "Built long-term consistency in a high-traffic store environment: displays, inventory, and customer support.",
-        metrics: [
-          ["4+", "Years"],
-          ["Inventory", "Support"],
-          ["Customer", "Service"],
-        ],
-        jumpId: "exp-food-lion",
-      },
-      {
-        emoji: "🌳",
-        title: "Volunteer",
-        company: "City of Clemson Parks and Recreation",
-        meta: "Clemson, SC • Mar 2023",
-        summary: "Supported community programming, helped build relationships, and provided IT help to older community members.",
-        metrics: [
-          ["Community", "Support"],
-          ["Partnerships", "Helped"],
-          ["IT", "Assist"],
-        ],
-        jumpId: "exp-clemson-parks",
-      },
-    ];
-
-    let spotlightIndex = 0;
-    const elRoleChip = document.getElementById("spotlightRoleChip");
-    const elCompany = document.getElementById("spotlightCompany");
-    const elMeta = document.getElementById("spotlightMeta");
-    const elSummary = document.getElementById("spotlightSummary");
-    const m1 = document.getElementById("spotlightMetric1");
-    const m2 = document.getElementById("spotlightMetric2");
-    const m3 = document.getElementById("spotlightMetric3");
-    const ml1 = document.getElementById("spotlightMetricLabel1");
-    const ml2 = document.getElementById("spotlightMetricLabel2");
-    const ml3 = document.getElementById("spotlightMetricLabel3");
-    const spotlightPrev = document.getElementById("spotlightPrev");
-    const spotlightNext = document.getElementById("spotlightNext");
-    const spotlightJump = document.getElementById("spotlightJump");
-
-    function renderSpotlight(i) {
-      const s = spotlights[i];
-      if (!s) return;
-      if (elRoleChip) elRoleChip.innerHTML = `<span>${s.emoji}</span><span>${s.title}</span>`;
-      if (elCompany) elCompany.textContent = s.company;
-      if (elMeta) elMeta.textContent = s.meta;
-      if (elSummary) elSummary.textContent = s.summary;
-      if (m1) m1.textContent = s.metrics[0][0];
-      if (ml1) ml1.textContent = s.metrics[0][1];
-      if (m2) m2.textContent = s.metrics[1][0];
-      if (ml2) ml2.textContent = s.metrics[1][1];
-      if (m3) m3.textContent = s.metrics[2][0];
-      if (ml3) ml3.textContent = s.metrics[2][1];
-    }
-
-    spotlightPrev?.addEventListener("click", () => {
-      spotlightIndex = (spotlightIndex - 1 + spotlights.length) % spotlights.length;
-      renderSpotlight(spotlightIndex);
-    });
-
-    spotlightNext?.addEventListener("click", () => {
-      spotlightIndex = (spotlightIndex + 1) % spotlights.length;
-      renderSpotlight(spotlightIndex);
-    });
-
-    spotlightJump?.addEventListener("click", () => {
-      const s = spotlights[spotlightIndex];
-      if (!s) return;
-      pendingScrollToId = s.jumpId;
-      setActivePage("experience");
-    });
-
-    const spotlightCard = document.getElementById("spotlightCard");
-    let spotlightTimer = null;
-
-    function rotateSpotlight() {
-      spotlightIndex = (spotlightIndex + 1) % spotlights.length;
-      renderSpotlight(spotlightIndex);
-    }
-
-    function startSpotlightAuto() {
-      if (prefersReducedMotion || spotlightTimer) return;
-      spotlightTimer = window.setInterval(() => {
-        if (document.hidden) return;
-        rotateSpotlight();
-      }, 8000);
-    }
-
-    function stopSpotlightAuto() {
-      if (!spotlightTimer) return;
-      window.clearInterval(spotlightTimer);
-      spotlightTimer = null;
-    }
-
-    spotlightCard?.addEventListener("mouseenter", stopSpotlightAuto);
-    spotlightCard?.addEventListener("mouseleave", startSpotlightAuto);
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) stopSpotlightAuto();
-      else startSpotlightAuto();
-    });
-
     document.addEventListener("keydown", (e) => {
       if (e.defaultPrevented) return;
       const target = e.target;
@@ -2083,14 +2088,12 @@ Sent from hiregunnar.live quick form`);
       lastUpdated.textContent = readable ? `• Last updated ${readable}` : "";
     }
 
-    renderSpotlight(spotlightIndex);
     setActivePage(hashPage || savedPage || "home", false);
-    setupRevealForPage(getActivePageEl());
+    restartCardAnimations(getActivePageEl());
     kickCounters();
     updateFab();
     updateScrollProgress();
     applySkillFilter("");
-    startSpotlightAuto();
   </script>
 </body>
 </html>
