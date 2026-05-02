@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gunnar Patterson | Resume Portfolio</title>
-  <meta name="description" content="Professional resume portfolio for Gunnar Patterson." />
+  <meta name="description" content="Professional resume portfolio for Gunnar Patterson — event operations and hospitality, backed by two years of computer science coursework and deep AI fluency." />
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#07111f" />
   <meta property="og:title" content="Gunnar Patterson – Event Operations &amp; Management" />
@@ -394,6 +394,10 @@
       gap: 20px;
     }
 
+    .skill-groups-2x2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .stack { display: grid; gap: 28px; }
 
     .card {
@@ -488,7 +492,7 @@
     .stats-row {
       margin-top: 18px;
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
     }
 
@@ -915,9 +919,12 @@
       .experience-grid,
       .grid-three,
       .pill-grid,
-      .stats-row,
       .spotlight-metrics {
         grid-template-columns: 1fr;
+      }
+
+      .stats-row {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .nav { display: none; }
@@ -1026,6 +1033,10 @@
                   <div class="stat-label">Festival seasons</div>
                 </div>
                 <div class="stat">
+                  <div class="stat-number" data-count="2" data-suffix=" yrs">0 yrs</div>
+                  <div class="stat-label">CS coursework</div>
+                </div>
+                <div class="stat">
                   <div class="stat-number" data-count="5" data-suffix="+">0+</div>
                   <div class="stat-label">Years service</div>
                 </div>
@@ -1046,7 +1057,7 @@
                 <div class="mini-panel">
                   <div class="mini-icon">💻</div>
                   <div class="mini-title">Technical Edge</div>
-                  <div class="mini-copy">Backed by computer science coursework, strong software fluency, and a long-standing interest in AI and emerging technology.</div>
+                  <div class="mini-copy">Two years of college-level computer science, fluent with modern AI tooling, and quick to pick up new software. Comfortable bridging operations work and the technology that runs it.</div>
                 </div>
                 <div class="mini-panel">
                   <div class="mini-icon">🚚</div>
@@ -1096,8 +1107,8 @@
                       Concentration: Tourism and Event Management
                     </p>
                     <p class="copy-block muted" style="margin-top: 10px; font-size: 14px;">May 2026</p>
-                    <p class="copy-block muted" style="margin-top: 14px; font-size: 14px;">
-                      Additional background in computer science coursework, with experience using modern software and technology tools.
+                    <p class="copy-block" style="margin-top: 14px; font-size: 14px;">
+                      <strong style="color: var(--text);">Two years of computer science coursework</strong> — programming fundamentals, problem decomposition, and applied software thinking — paired with self-directed depth in AI, modern tooling, and emerging technology.
                     </p>
                   </div>
                 </div>
@@ -1153,30 +1164,64 @@
         <div class="section-head">
           <div class="section-kicker">Profile</div>
           <h2 class="section-title">About Gunnar</h2>
-          <p class="section-subtitle">Experience in events, hospitality, and day-to-day operations.</p>
+          <p class="section-subtitle">Experience in events, hospitality, and day-to-day operations — backed by a strong technical foundation.</p>
         </div>
 
-        <div class="grid-two">
-          <article class="card">
-            <div class="card-inner">
-              <h3 style="font-size: 26px; font-weight: 700;">Professional Summary</h3>
-              <p class="copy-block" style="margin-top: 18px;">
-                Gunnar Patterson has a background in event operations, hospitality, guest service, and logistics. His experience includes live events, front desk work, and customer-facing roles that have built strong communication, organization, and problem-solving skills.
-              </p>
-              <p class="copy-block muted" style="margin-top: 16px;">
-                He works well in fast-paced environments where staying organized, helping people, and handling issues quickly all matter.
-              </p>
-            </div>
-          </article>
+        <div class="stack">
+          <div class="grid-two">
+            <article class="card">
+              <div class="card-inner">
+                <h3 style="font-size: 26px; font-weight: 700;">Professional Summary</h3>
+                <p class="copy-block" style="margin-top: 18px;">
+                  Gunnar Patterson has a background in event operations, hospitality, guest service, and logistics. His experience includes live events, front desk work, and customer-facing roles that have built strong communication, organization, and problem-solving skills.
+                </p>
+                <p class="copy-block muted" style="margin-top: 16px;">
+                  He works well in fast-paced environments where staying organized, helping people, and handling issues quickly all matter — and brings a technical fluency that lets him pick up new tools and systems faster than most.
+                </p>
+              </div>
+            </article>
+
+            <article class="card">
+              <div class="card-inner">
+                <h3 style="font-size: 26px; font-weight: 700;">What stands out</h3>
+                <div class="feature-list">
+                  <div class="feature-item"><span>›</span><span>Hands-on experience with live events and on-site operations.</span></div>
+                  <div class="feature-item"><span>›</span><span>Comfortable working in busy environments where teamwork matters.</span></div>
+                  <div class="feature-item"><span>›</span><span>Experience supporting large public events, including festival and motorsports work.</span></div>
+                  <div class="feature-item"><span>›</span><span>Two years of college-level computer science coursework and deep familiarity with modern AI tools.</span></div>
+                  <div class="feature-item"><span>›</span><span>Strong fit for roles that blend operations, guest experience, and technology fluency.</span></div>
+                </div>
+              </div>
+            </article>
+          </div>
 
           <article class="card">
             <div class="card-inner">
-              <h3 style="font-size: 26px; font-weight: 700;">What stands out</h3>
-              <div class="feature-list">
-                <div class="feature-item"><span>›</span><span>Hands-on experience with live events and on-site operations.</span></div>
-                <div class="feature-item"><span>›</span><span>Comfortable working in busy environments where teamwork matters.</span></div>
-                <div class="feature-item"><span>›</span><span>Experience supporting large public events, including festival and motorsports work.</span></div>
-                <div class="feature-item"><span>›</span><span>Strong fit for event, hospitality, tourism, and operations roles.</span></div>
+              <div class="section-kicker" style="margin-bottom: 8px;">Technical Foundation</div>
+              <h3 style="font-size: 26px; font-weight: 700;">Computer Science &amp; AI Fluency</h3>
+              <p class="copy-block" style="margin-top: 14px;">
+                Two years of college-level computer science coursework gave Gunnar a working understanding of how software is actually built — programming fundamentals, problem decomposition, data handling, and the discipline of debugging. That foundation shows up day-to-day as faster onboarding into new tools, sharper troubleshooting, and the confidence to dig past surface-level fixes.
+              </p>
+              <p class="copy-block" style="margin-top: 14px;">
+                On top of that, he&rsquo;s spent significant self-directed time staying current with the AI landscape — large language models, prompt engineering, agentic workflows, and the practical limits of where today&rsquo;s tools help and where they don&rsquo;t. In most rooms he&rsquo;s the person colleagues turn to with questions about ChatGPT, Claude, and how to actually get useful work out of these systems.
+              </p>
+
+              <div class="grid-three" style="margin-top: 22px;">
+                <div class="mini-panel">
+                  <div class="mini-icon">🧠</div>
+                  <div class="mini-title">CS Coursework</div>
+                  <div class="mini-copy">Two years of programming fundamentals, problem-solving patterns, and software thinking from college-level computer science classes.</div>
+                </div>
+                <div class="mini-panel">
+                  <div class="mini-icon">🤖</div>
+                  <div class="mini-title">Applied AI</div>
+                  <div class="mini-copy">Working knowledge of modern LLMs, prompt engineering, and AI workflows. Comfortable evaluating when a tool helps and when it gets in the way.</div>
+                </div>
+                <div class="mini-panel">
+                  <div class="mini-icon">⚙️</div>
+                  <div class="mini-title">Software Adaptability</div>
+                  <div class="mini-copy">Quick to learn new platforms — from POS and front-desk systems to productivity suites, ticketing tools, and event tech stacks.</div>
+                </div>
               </div>
             </div>
           </article>
@@ -1289,7 +1334,7 @@
         <div class="section-head">
           <div class="section-kicker">Capabilities</div>
           <h2 class="section-title">Skills built for modern work</h2>
-          <p class="section-subtitle">A mix of operations, people skills, and technical adaptability.</p>
+          <p class="section-subtitle">A mix of operations, people skills, and a strong technical foundation — with computer science coursework and deep AI fluency.</p>
         </div>
 
         <div class="grid-split">
@@ -1298,7 +1343,7 @@
               <h3 style="font-size: 26px; font-weight: 700;">At a glance</h3>
 
               <div class="search-wrap">
-                <input class="search-input" id="skillSearch" type="search" placeholder="Search skills (try: logistics, guest, AI)..." autocomplete="off" />
+                <input class="search-input" id="skillSearch" type="search" placeholder="Search skills (try: AI, programming, logistics, prompt)..." autocomplete="off" />
                 <button class="ghost" id="clearSkillSearch" type="button">Clear</button>
               </div>
               <p class="copy-block muted" id="skillSearchStatus" style="margin-top: 12px; font-size: 14px;">
@@ -1311,8 +1356,13 @@
                 <div class="tag">Customer Service Excellence</div>
                 <div class="tag">Team Collaboration and Leadership</div>
                 <div class="tag">Creative Problem-Solving</div>
-                <div class="tag">Advanced Software Skills</div>
-                <div class="tag">AI Technology Familiarity</div>
+                <div class="tag">Computer Science Coursework</div>
+                <div class="tag">Programming Fundamentals</div>
+                <div class="tag">AI &amp; LLM Fluency</div>
+                <div class="tag">Prompt Engineering</div>
+                <div class="tag">Modern AI Workflows</div>
+                <div class="tag">Software Adaptability</div>
+                <div class="tag">Technical Troubleshooting</div>
                 <div class="tag">Strong Communication</div>
                 <div class="tag">Adaptability and Flexibility</div>
                 <div class="tag">Attention to Detail</div>
@@ -1323,7 +1373,7 @@
             </div>
           </article>
 
-          <div class="grid-three" id="skillGroups">
+          <div class="grid-three skill-groups-2x2" id="skillGroups">
             <article class="card group-card">
               <h3 style="font-size: 20px; font-weight: 700;">Event &amp; Operations</h3>
               <div class="group-list">
@@ -1347,11 +1397,27 @@
             </article>
 
             <article class="card group-card">
-              <h3 style="font-size: 20px; font-weight: 700;">Technical &amp; Creative</h3>
+              <h3 style="font-size: 20px; font-weight: 700;">Technical &amp; CS</h3>
               <div class="group-list">
-                <div class="chip">Advanced Software Skills</div>
-                <div class="chip">AI Technology Familiarity</div>
+                <div class="chip">Computer Science Coursework</div>
+                <div class="chip">Programming Fundamentals</div>
+                <div class="chip">Problem Decomposition</div>
+                <div class="chip">Debugging &amp; Troubleshooting</div>
+                <div class="chip">Software Adaptability</div>
                 <div class="chip">Creative Problem-Solving</div>
+                <div class="chip">Self-Directed Learning</div>
+              </div>
+            </article>
+
+            <article class="card group-card">
+              <h3 style="font-size: 20px; font-weight: 700;">AI Fluency</h3>
+              <div class="group-list">
+                <div class="chip">LLMs (ChatGPT, Claude, Gemini)</div>
+                <div class="chip">Prompt Engineering</div>
+                <div class="chip">Agentic AI Workflows</div>
+                <div class="chip">AI-Augmented Productivity</div>
+                <div class="chip">Tool Evaluation &amp; Limits</div>
+                <div class="chip">Emerging Tech Awareness</div>
               </div>
             </article>
           </div>
