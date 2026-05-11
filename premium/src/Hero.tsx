@@ -376,7 +376,7 @@ export default function Hero() {
                 <Zap className="h-4 w-4" />
               </GradientIcon>
               <span className="text-sm text-white/70">
-                Event-ready. Guest-first. Ops-focused.
+                Clemson Graduate · Event-ready · CS + AI Fluent
               </span>
             </Pill>
 
@@ -394,9 +394,10 @@ export default function Hero() {
             </p>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-2 text-xs uppercase tracking-[0.18em] text-white/55">
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Open to relocation</span>
-              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Available immediately</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Clemson '26 Grad</span>
               <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Event + Ops Focus</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">CS + AI Fluent</span>
+              <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5">Open to relocation</span>
             </div>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
@@ -428,7 +429,7 @@ export default function Hero() {
               </button>
             </div>
 
-            <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {STATS.map((s) => (
                 <div
                   key={s.label}
@@ -600,10 +601,62 @@ export default function Hero() {
                       <br />
                       Concentration: Tourism and Event Management
                     </div>
-                    <div className="mt-3 text-sm text-white/60">May 2026</div>
-                    <div className="mt-4 text-sm text-white/60 leading-relaxed">
-                      Additional background in computer science coursework, with
-                      experience using modern software and technology tools.
+                    <div className="mt-3 text-sm font-semibold bg-gradient-to-br from-white via-[#FA93FA] to-[#983AD6] bg-clip-text text-transparent">
+                      Graduated May 8, 2026
+                    </div>
+                    <div className="mt-4 text-sm text-white/70 leading-relaxed">
+                      Also completed{" "}
+                      <span className="text-white">
+                        two years of computer science coursework
+                      </span>{" "}
+                      — programming fundamentals, problem decomposition, and
+                      applied software thinking — alongside self-directed depth
+                      in AI tooling since 2020.
+                    </div>
+                  </div>
+                </GlassCard>
+              </Reveal>
+
+              <Reveal delay={0.18}>
+                <GlassCard>
+                  <div className="p-6 sm:p-8">
+                    <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                      Computer Science &amp; AI
+                    </div>
+                    <div className="mt-4 text-lg font-semibold">
+                      Two years CS · AI fluent since 2020
+                    </div>
+                    <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                      Programming fundamentals, problem decomposition, and the
+                      discipline of debugging — a working understanding of how
+                      software is actually built.
+                    </p>
+                    <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                      Personal emphasis on{" "}
+                      <span className="text-white">
+                        artificial intelligence
+                      </span>
+                      : actively testing and researching{" "}
+                      <span className="text-white">
+                        LLMs and diffusion models
+                      </span>{" "}
+                      since 2020, well before they hit the mainstream.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {[
+                        "Programming",
+                        "Debugging",
+                        "LLMs",
+                        "Diffusion Models",
+                        "Prompt Engineering",
+                      ].map((chip) => (
+                        <span
+                          key={chip}
+                          className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                        >
+                          {chip}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </GlassCard>
@@ -843,7 +896,7 @@ export default function Hero() {
               </GlassCard>
             </Reveal>
 
-            <div className="grid gap-6 lg:col-span-2 lg:grid-cols-3">
+            <div className="grid gap-6 lg:col-span-2 lg:grid-cols-2">
               {SKILL_GROUPS.map((g, idx) => {
                 const matches = groupMatches(g.items);
                 if (q && matches.length === 0) return null;
