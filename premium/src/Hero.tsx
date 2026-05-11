@@ -70,10 +70,10 @@ function Reveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 16, filter: "blur(10px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-10% 0px -12% 0px" }}
-      transition={{ duration: 0.75, ease: [0.2, 0, 0, 1], delay }}
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+      transition={{ duration: 0.45, ease: [0.2, 0, 0, 1], delay }}
     >
       {children}
     </motion.div>
@@ -366,9 +366,9 @@ export default function Hero() {
       <main className="relative mx-auto max-w-6xl px-6 pb-28">
         <section id="home" className="pt-20 sm:pt-24">
           <motion.div
-            initial={{ opacity: 0, y: 14, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, ease: [0.2, 0, 0, 1] }}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, ease: [0.2, 0, 0, 1] }}
             className="mx-auto max-w-3xl text-center"
           >
             <Pill>
