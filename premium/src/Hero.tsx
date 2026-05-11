@@ -447,8 +447,9 @@ export default function Hero() {
           </motion.div>
 
           <div className="mt-14 grid grid-cols-1 gap-6 lg:grid-cols-3">
+            <div className="grid gap-6 lg:col-span-2">
             <Reveal>
-              <GlassCard className="lg:col-span-2">
+              <GlassCard>
                 <div className="p-6 sm:p-8">
                   <div className="flex items-start justify-between gap-4">
                     <div>
@@ -536,6 +537,50 @@ export default function Hero() {
               </GlassCard>
             </Reveal>
 
+            <Reveal delay={0.1}>
+              <GlassCard>
+                <div className="p-6 sm:p-8">
+                  <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
+                    Computer Science &amp; AI
+                  </div>
+                  <div className="mt-4 text-lg font-semibold">
+                    Two years CS · AI fluent since 2020
+                  </div>
+                  <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                    Programming fundamentals, problem decomposition, and the
+                    discipline of debugging — a working understanding of how
+                    software is actually built.
+                  </p>
+                  <p className="mt-3 text-sm text-white/70 leading-relaxed">
+                    Personal emphasis on{" "}
+                    <span className="text-white">artificial intelligence</span>
+                    : actively testing and researching{" "}
+                    <span className="text-white">
+                      LLMs and diffusion models
+                    </span>{" "}
+                    since 2020, well before they hit the mainstream.
+                  </p>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {[
+                      "Programming",
+                      "Debugging",
+                      "LLMs",
+                      "Diffusion Models",
+                      "Prompt Engineering",
+                    ].map((chip) => (
+                      <span
+                        key={chip}
+                        className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75"
+                      >
+                        {chip}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </GlassCard>
+            </Reveal>
+            </div>
+
             <div className="grid gap-6">
               <Reveal delay={0.06}>
                 <GlassCard>
@@ -612,51 +657,6 @@ export default function Hero() {
                       — programming fundamentals, problem decomposition, and
                       applied software thinking — alongside self-directed depth
                       in AI tooling since 2020.
-                    </div>
-                  </div>
-                </GlassCard>
-              </Reveal>
-
-              <Reveal delay={0.18}>
-                <GlassCard>
-                  <div className="p-6 sm:p-8">
-                    <div className="text-[11px] tracking-[0.32em] uppercase text-white/60">
-                      Computer Science &amp; AI
-                    </div>
-                    <div className="mt-4 text-lg font-semibold">
-                      Two years CS · AI fluent since 2020
-                    </div>
-                    <p className="mt-3 text-sm text-white/70 leading-relaxed">
-                      Programming fundamentals, problem decomposition, and the
-                      discipline of debugging — a working understanding of how
-                      software is actually built.
-                    </p>
-                    <p className="mt-3 text-sm text-white/70 leading-relaxed">
-                      Personal emphasis on{" "}
-                      <span className="text-white">
-                        artificial intelligence
-                      </span>
-                      : actively testing and researching{" "}
-                      <span className="text-white">
-                        LLMs and diffusion models
-                      </span>{" "}
-                      since 2020, well before they hit the mainstream.
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {[
-                        "Programming",
-                        "Debugging",
-                        "LLMs",
-                        "Diffusion Models",
-                        "Prompt Engineering",
-                      ].map((chip) => (
-                        <span
-                          key={chip}
-                          className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/75"
-                        >
-                          {chip}
-                        </span>
-                      ))}
                     </div>
                   </div>
                 </GlassCard>
