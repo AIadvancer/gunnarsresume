@@ -18,9 +18,9 @@ export type Experience = {
 
 export const PROFILE = {
   name: "Gunnar Patterson",
-  title: "Event & Hospitality Professional",
+  title: "Event & Hospitality Professional · Clemson '26 Graduate",
   tagline:
-    "Event and hospitality professional with experience in large-scale events, logistics, guest service, and day-to-day operations.",
+    "Clemson graduate (B.S., Tourism and Event Management — May 2026) with experience in large-scale events, logistics, guest service, and day-to-day operations — backed by two years of computer science coursework and AI fluency since 2020 (LLMs and diffusion models).",
   email: "gunrp2@gmail.com",
   phone: "(864) 491-9201",
   phoneHref: "+18644919201",
@@ -32,6 +32,7 @@ export const STATS = [
   { value: "800+", label: "Event hours" },
   { value: "2", label: "Festival seasons" },
   { value: "5+", label: "Years service" },
+  { value: "2 yrs", label: "CS coursework" },
 ];
 
 export const EXPERIENCE: Experience[] = [
@@ -107,14 +108,19 @@ export const SKILL_TAGS = [
   "Customer Service Excellence",
   "Team Collaboration and Leadership",
   "Creative Problem-Solving",
-  "Advanced Software Skills",
-  "AI Technology Familiarity",
   "Strong Communication",
   "Adaptability and Flexibility",
   "Attention to Detail",
   "Cultural Awareness and Sensitivity",
   "Front Desk Operations",
   "Guest Relations",
+  "Computer Science Coursework",
+  "Programming Fundamentals",
+  "AI Fluency (Since 2020)",
+  "Large Language Models",
+  "Diffusion Models",
+  "Prompt Engineering",
+  "Software Adaptability",
 ];
 
 export const SKILL_GROUPS = [
@@ -126,6 +132,7 @@ export const SKILL_GROUPS = [
       "Team Collaboration and Leadership",
       "Attention to Detail",
       "Adaptability and Flexibility",
+      "Creative Problem-Solving",
     ],
   },
   {
@@ -139,11 +146,23 @@ export const SKILL_GROUPS = [
     ],
   },
   {
-    title: "Technical & Creative",
+    title: "Computer Science",
     items: [
-      "Advanced Software Skills",
-      "AI Technology Familiarity",
-      "Creative Problem-Solving",
+      "Computer Science Coursework (2 yrs)",
+      "Programming Fundamentals",
+      "Problem Decomposition",
+      "Debugging & Troubleshooting",
+      "Software Adaptability",
+    ],
+  },
+  {
+    title: "AI Fluency (Since 2020)",
+    items: [
+      "LLMs (ChatGPT, Claude, Gemini)",
+      "Diffusion Models (Stable Diffusion, Midjourney)",
+      "Prompt Engineering",
+      "Agentic AI Workflows",
+      "Tool Evaluation & Limits",
     ],
   },
 ];
